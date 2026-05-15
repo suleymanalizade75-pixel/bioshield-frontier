@@ -1,0 +1,192 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "brand": {
+      "type": "string",
+      "enum": [
+        "ImmuCell",
+        "XVET",
+        "Kerry Group",
+        "Generic",
+        "Proprietary"
+      ],
+      "description": "Product brand/manufacturer"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Anti-inflammatory/Analgesic",
+        "Anti-parasitic",
+        "Antibiotics",
+        "Antiviral",
+        "Nutritional supplement",
+        "Respiratory system",
+        "Cardiovascular",
+        "Digestive/Gastrointestinal",
+        "Immune support",
+        "Vaccines",
+        "Test kits & Devices",
+        "Pet Supplements",
+        "Milk Replacers",
+        "Medical Equipment",
+        "Feed Additives"
+      ],
+      "description": "Product category"
+    },
+    "description": {
+      "type": "string",
+      "description": "Product description"
+    },
+    "clinical_indication": {
+      "type": "string",
+      "description": "Medical purpose/disease indication"
+    },
+    "species": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Bovine",
+          "Porcine",
+          "Ovine",
+          "Poultry",
+          "Equine",
+          "Caprine",
+          "Aquaculture",
+          "Bees",
+          "Canine",
+          "Feline"
+        ]
+      },
+      "description": "Species this product covers"
+    },
+    "dosage_form": {
+      "type": "string",
+      "enum": [
+        "Injectable - Powder",
+        "Injectable - Liquid",
+        "Injectable - Suspension",
+        "Oral - Solution",
+        "Oral - Suspension",
+        "Oral - Powder",
+        "Oral - Tablet",
+        "Oral - Bolus",
+        "Pour-on",
+        "Drops",
+        "Soft Chew",
+        "Vaccine",
+        "Powder - Premix",
+        "Liquid - Drench"
+      ],
+      "description": "Dosage form"
+    },
+    "dosage": {
+      "type": "string",
+      "description": "Precise dosage per unit (e.g., '2ml IM per calf', '100ml per 1000L water')"
+    },
+    "dosage_unit": {
+      "type": "string",
+      "enum": [
+        "mg/kg",
+        "ml/kg",
+        "ml/L water",
+        "ml/animal",
+        "g/animal",
+        "g/kg feed",
+        "mg/animal",
+        "IU/kg",
+        "CFU/ml",
+        "dose/animal"
+      ],
+      "description": "Dosage measurement unit"
+    },
+    "route_of_administration": {
+      "type": "string",
+      "enum": [
+        "Intramuscular (IM)",
+        "Intravenous (IV)",
+        "Oral",
+        "Subcutaneous (SC)",
+        "Per-oral drench",
+        "Drinking water",
+        "Feed-mixed",
+        "Intranasal",
+        "Topical"
+      ],
+      "description": "Method of administration"
+    },
+    "treatment_duration": {
+      "type": "string",
+      "description": "Duration of treatment (e.g., '5-7 days', 'single dose', 'daily for 14 days')"
+    },
+    "age_restrictions": {
+      "type": "string",
+      "description": "Age group restrictions (e.g., 'newborns only', '\u22654 weeks', 'all ages')"
+    },
+    "contraindications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Medical contraindications"
+    },
+    "withdrawal_period": {
+      "type": "string",
+      "description": "Meat/milk withdrawal period if applicable"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Product image URL"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key product features"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price per unit in USD"
+    },
+    "efficacy_rate": {
+      "type": "number",
+      "description": "Efficacy percentage if applicable"
+    },
+    "symptoms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Associated symptoms (for AI mapping: scours, respiratory infection, etc.)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Search tags (parasite type, symptom, disease, etc.)"
+    },
+    "active_ingredient": {
+      "type": "string",
+      "description": "Active pharmaceutical ingredient"
+    },
+    "gmp_certified": {
+      "type": "boolean",
+      "default": false,
+      "description": "GMP certification status"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "species",
+    "clinical_indication",
+    "dosage"
+  ]
+}

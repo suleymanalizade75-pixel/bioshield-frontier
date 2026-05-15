@@ -1,0 +1,71 @@
+{
+  "name": "Vaccine",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Vaccine product name"
+    },
+    "code": {
+      "type": "string",
+      "description": "Product batch code"
+    },
+    "species": {
+      "type": "string",
+      "enum": [
+        "bovine",
+        "porcine",
+        "ovine",
+        "poultry",
+        "equine",
+        "caprine"
+      ],
+      "description": "Target species"
+    },
+    "disease": {
+      "type": "string",
+      "description": "Disease the vaccine protects against"
+    },
+    "dosage": {
+      "type": "string",
+      "description": "Recommended dosage"
+    },
+    "storage_temp": {
+      "type": "string",
+      "description": "Storage temperature range"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price per unit in USD"
+    },
+    "units_per_pack": {
+      "type": "number",
+      "description": "Number of doses per pack"
+    },
+    "efficacy_rate": {
+      "type": "number",
+      "description": "Efficacy percentage"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed product description"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Product image URL"
+    },
+    "immunity_days": {
+      "type": "number",
+      "description": "Days to full immunity"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "name",
+    "species",
+    "price"
+  ]
+}
