@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShieldCheck, ShoppingCart, Search, MapPin } from 'lucide-react';
+import { Menu, X, ShieldCheck, ShoppingCart, Search } from 'lucide-react';
 import { useLang } from '@/lib/i18n';
 
-function WhatsAppIcon({ className = 'w-3 h-3' }) {
-  return (
-    <svg viewBox="0 0 32 32" className={className} aria-hidden="true" fill="currentColor">
-      <path d="M16.02 3C8.84 3 3 8.84 3 16.02c0 2.3.6 4.53 1.75 6.5L3.1 29l6.64-1.6A12.94 12.94 0 0 0 16.02 29C23.2 29 29 23.2 29 16.02 29 8.84 23.2 3 16.02 3Zm0 23.7c-2.02 0-4-.54-5.72-1.57l-.41-.24-3.94.95 1.02-3.83-.27-.43a10.65 10.65 0 0 1-1.41-5.56c0-5.9 4.82-10.72 10.73-10.72 5.9 0 10.68 4.82 10.68 10.72 0 5.91-4.78 10.68-10.68 10.68Zm5.88-8.02c-.32-.16-1.9-.94-2.2-1.05-.3-.1-.52-.16-.74.16-.21.32-.84 1.05-1.03 1.27-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.6-.96-.86-1.61-1.92-1.8-2.24-.19-.32-.02-.49.14-.65.15-.14.32-.38.49-.57.16-.19.21-.32.32-.54.1-.21.05-.4-.03-.56-.08-.16-.73-1.76-1-2.41-.27-.64-.54-.55-.74-.56h-.62c-.22 0-.57.08-.86.4-.3.32-1.14 1.12-1.14 2.72 0 1.6 1.17 3.15 1.33 3.36.16.22 2.3 3.52 5.58 4.94.78.33 1.38.53 1.86.68.78.25 1.49.21 2.05.13.63-.09 1.9-.78 2.17-1.52.27-.75.27-1.39.19-1.52-.08-.14-.3-.22-.62-.38Z" />
-    </svg>
-  );
-}
 
 export default function Navbar({ cartCount = 0, onSearchOpen }) {
   const [scrolled, setScrolled] = useState(false);
@@ -64,15 +57,6 @@ export default function Navbar({ cartCount = 0, onSearchOpen }) {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden xl:flex items-center gap-3 font-mono text-[9px] tracking-widest text-muted-foreground">
-              <a href="https://wa.me/994502121233" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-                <WhatsAppIcon className="w-3 h-3 text-primary" /> +994 50 212 12 33
-              </a>
-              <a href="https://www.google.com/maps/search/?api=1&query=Port+Baku,Baku,Azerbaijan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-                <MapPin className="w-3 h-3 text-primary" /> Baku, Azerbaijan
-              </a>
-            </div>
-
             {/* Search button */}
             <button
               onClick={onSearchOpen}
