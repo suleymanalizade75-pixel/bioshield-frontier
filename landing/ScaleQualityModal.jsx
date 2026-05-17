@@ -1,16 +1,38 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['GrowAqua', 'Powder', 'NAGP'];
-
-const benefits = [
-  'Helps to improve the performance of the fish and shrimps',
-  'Provides probiotics to maintain good flora in the gut',
-  'A good alternative to growth promoters',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['GrowAqua', 'Powder', 'NAGP'] : lang === 'AZ' ? ['GrowAqua', 'Toz', 'NAGP'] : ['GrowAqua', 'Порошок', 'NAGP'],
+  tagline: lang === 'EN' ? 'Power of Probiotic & Prebiotic' : lang === 'AZ' ? 'Probiotik və Prebiotik gücü' : 'Сила пробиотика и пребиотика',
+  features: lang === 'EN'
+    ? 'Gut health is a major key to success. GrowAqua is the smart mixture of an efficient probiotic with a prebiotic coming from the yeast (S.cerevisiae). Probiotic and prebiotic in GrowAqua help to improve animal performance and have a direct effect against the unwanted micro-organisms in the gut.'
+    : lang === 'AZ'
+    ? 'Bağırsaq sağlamlığı uğurun əsas açarıdır. GrowAqua, maya (S. cerevisiae) mənşəli prebiotik ilə effektiv probiotikdən ibarət ağıllı bir qarışıqdır. GrowAqua-dakı probiotik və prebiotik heyvan məhsuldarlığını artırmağa kömək edir və bağırsaqda istənilməyən mikroorqanizmlərə qarşı birbaşa təsir göstərir.'
+    : 'Здоровье кишечника — главный ключ к успеху. GrowAqua — это умная смесь эффективного пробиотика с пребиотиком, получаемым из дрожжей (S. cerevisiae). Пробиотик и пребиотик в составе GrowAqua помогают улучшить продуктивность животных и оказывают прямое воздействие против нежелательных микроорганизмов в кишечнике.',
+  benefits: lang === 'EN' ? [
+    'Helps to improve the performance of the fish and shrimps',
+    'Provides probiotics to maintain good flora in the gut',
+    'A good alternative to growth promoters',
+  ] : lang === 'AZ' ? [
+    'Balıq və karides məhsuldarlığını artırmağa kömək edir',
+    'Bağırsaqda sağlam flora saxlamaq üçün probiotiklər təmin edir',
+    'Böyümə stimulyatorlarına yaxşı bir alternativdir',
+  ] : [
+    'Помогает улучшить продуктивность рыб и креветок',
+    'Обеспечивает пробиотики для поддержания здоровой флоры кишечника',
+    'Хорошая альтернатива стимуляторам роста',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '1 kg, 10 kg and 25 kg craft bags' : lang === 'AZ' ? '1 kq, 10 kq və 25 kq kraft torbaları' : '1 кг, 10 кг и 25 кг крафт-мешки',
+});
 
 export default function ScaleQualityModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -67,7 +89,7 @@ export default function ScaleQualityModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -84,7 +106,7 @@ export default function ScaleQualityModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#1A82C0' }}>
-                Power of Probiotic & Prebiotic
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -103,10 +125,10 @@ export default function ScaleQualityModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(26,130,192,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Gut health is a major key to success. GrowAqua is the smart mixture of an efficient probiotic with a prebiotic coming from the yeast (S.cerevisiae). Probiotic and prebiotic in GrowAqua help to improve animal performance and have a direct effect against the unwanted micro-organisms in the gut.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -120,10 +142,10 @@ export default function ScaleQualityModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(26,130,192,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#1A82C0' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -136,9 +158,9 @@ export default function ScaleQualityModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(26,130,192,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(26,130,192,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(26,130,192,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    1 kg, 10 kg and 25 kg craft bags
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

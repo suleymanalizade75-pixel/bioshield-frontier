@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, ChevronRight, Tag } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
 const ALL_PRODUCTS = [
   // POULTRY · HEALTH
@@ -80,6 +81,8 @@ const CATEGORY_COLORS = {
 };
 
 export default function ProductSearchModal({ open, onClose }) {
+  const { t } = useLang();
+  const cp = t.catalog_page;
   const [query, setQuery] = useState('');
   const inputRef = useRef(null);
 
@@ -145,7 +148,7 @@ export default function ProductSearchModal({ open, onClose }) {
                 ref={inputRef}
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search products, species, categories..."
+                placeholder={cp.searchPlaceholder}
                 className="flex-1 bg-transparent font-inter text-base text-white placeholder-white/25 focus:outline-none"
               />
               {query && (
@@ -167,7 +170,7 @@ export default function ProductSearchModal({ open, onClose }) {
             {/* Result count */}
             <div className="px-5 py-2 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
               <span className="font-mono text-[9px] tracking-[3px]" style={{ color: 'rgba(255,255,255,0.25)' }}>
-                {filtered.length} PRODUCT{filtered.length !== 1 ? 'S' : ''} FOUND
+                {filtered.length} {cp.productsFound.toUpperCase()}
               </span>
             </div>
 
@@ -176,7 +179,7 @@ export default function ProductSearchModal({ open, onClose }) {
               {filtered.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 gap-3">
                   <Search className="w-10 h-10" style={{ color: 'rgba(255,255,255,0.1)' }} />
-                  <p className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>No products match your search</p>
+                  <p className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>{cp.noProducts}</p>
                 </div>
               ) : (
                 <div className="p-3 space-y-1.5">

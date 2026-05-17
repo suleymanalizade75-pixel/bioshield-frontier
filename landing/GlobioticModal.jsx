@@ -1,19 +1,46 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Globiotic', 'Milk Soluble Powder', 'Early Care'];
-
-const benefits = [
-  'Protects the intestinal mucosa against transient pathogens',
-  'Improves resistance and livability',
-  'Optimizes the absorption of nutrients, thus increasing weight gain',
-  'ß-Carotene supports the formation of an active immune system',
-  'Lactic-acid bacteria promote a healthy intestinal flora',
-  'Overall, better performance from the early stage until weaning',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Globiotic', 'Milk Soluble Powder', 'Early Care'] : lang === 'AZ' ? ['Globiotic', 'Süddə Həll Olan Toz', 'Erkən Qulluq'] : ['Globiotic', 'Растворимый в Молоке Порошок', 'Ранний Уход'],
+  features: lang === 'EN'
+    ? 'Globiotic is the ideal start drink for newborn calves, as it supplies the immunoglobulins needed for passive immunity. Once immunoglobulins enter the gut, they help to create a barrier against bacterial colonization or viral penetration. This protects the villi formation and digestion, preparing animals for growth and weight gain. With the help of vitamins, ß-Carotene, organic-bound iron, selenium, and Enterococcus faecium, a strong body\'s own immunity is ensured.'
+    : lang === 'AZ'
+    ? 'Globiotic yeni doğulmuş buzovlar üçün ideal başlanğıc içkisidir, çünki passiv immunitet üçün lazım olan immunoqlobulinləri təmin edir. İmmunoqlobulinlər bağırsağa daxil olduqdan sonra bakterial kolonizasiyaya və ya viral nüfuza qarşı maneə yaratmağa kömək edir. Bu, villus formalaşmasını və həzmi qoruyur, heyvanları böyümə və çəki artımı üçün hazırlayır. Vitaminlər, ß-Karotin, üzvi bağlı dəmir, selenium və Enterococcus faecium köməyi ilə güclü bədənin öz immuniteti təmin edilir.'
+    : 'Globiotic — идеальный стартовый напиток для новорождённых телят, так как он обеспечивает иммуноглобулины, необходимые для пассивного иммунитета. После попадания иммуноглобулинов в кишечник они помогают создать барьер против бактериальной колонизации или вирусного проникновения. Это защищает формирование ворсинок и пищеварение, подготавливая животных к росту и набору веса. С помощью витаминов, β-каротина, органически связанного железа, селена и Enterococcus faecium обеспечивается крепкий собственный иммунитет организма.',
+  benefits: lang === 'EN' ? [
+    'Protects the intestinal mucosa against transient pathogens',
+    'Improves resistance and livability',
+    'Optimizes the absorption of nutrients, thus increasing weight gain',
+    'ß-Carotene supports the formation of an active immune system',
+    'Lactic-acid bacteria promote a healthy intestinal flora',
+    'Overall, better performance from the early stage until weaning',
+  ] : lang === 'AZ' ? [
+    'Bağırsaq selikli qişasını keçici patogenlərə qarşı qoruyur',
+    'Müqavimət və yaşama qabiliyyətini yaxşılaşdırır',
+    'Qida maddələrinin sorulmasını optimallaşdırır, beləliklə çəki artımını artırır',
+    'ß-Karotin aktiv immunitet sisteminin formalaşmasını dəstəkləyir',
+    'Laktik turşu bakteriyaları sağlam bağırsaq florasını təşviq edir',
+    'Ümumiyyətlə, erkən mərhələdən süddən kəsməyə qədər daha yaxşı performans',
+  ] : [
+    'Защищает кишечную слизистую от транзиторных патогенов',
+    'Улучшает резистентность и жизнеспособность',
+    'Оптимизирует усвоение питательных веществ, увеличивая прирост массы тела',
+    'β-каротин поддерживает формирование активной иммунной системы',
+    'Молочнокислые бактерии способствуют здоровой кишечной флоре',
+    'В целом, лучшая продуктивность с раннего возраста до отъёма',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '1 kg aluminum bags, 2.5 kg buckets, 10 kg, and 25 kg craft bags' : lang === 'AZ' ? '1 kq alüminium torba, 2,5 kq vedrə, 10 kq və 25 kq kağız torbalar' : '1 кг алюминиевые пакеты, 2,5 кг вёдра, 10 кг и 25 кг крафт-мешки',
+});
 
 export default function GlobioticModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -70,7 +97,7 @@ export default function GlobioticModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -106,10 +133,10 @@ export default function GlobioticModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Globiotic is the ideal start drink for newborn calves, as it supplies the immunoglobulins needed for passive immunity. Once immunoglobulins enter the gut, they help to create a barrier against bacterial colonization or viral penetration. This protects the villi formation and digestion, preparing animals for growth and weight gain. With the help of vitamins, ß-Carotene, organic-bound iron, selenium, and Enterococcus faecium, a strong body's own immunity is ensured.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -123,10 +150,10 @@ export default function GlobioticModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#34d399' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -139,9 +166,9 @@ export default function GlobioticModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(52,211,153,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    1 kg aluminum bags, 2.5 kg buckets, 10 kg, and 25 kg craft bags
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

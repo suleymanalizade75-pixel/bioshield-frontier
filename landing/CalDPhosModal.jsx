@@ -1,16 +1,42 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['X-Cid Plus', 'Liquid', 'Acidifiers'];
-
-const benefits = [
-  'Protects against bacterial contamination',
-  'Reduces water pH',
-  'Enhances free chlorine concentration when used with chlorine',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['X-Cid Plus', 'Liquid', 'Acidifiers'] : lang === 'AZ' ? ['X-Cid Plus', 'Maye', 'Turşulaşdırıcılar'] : ['X-Cid Plus', 'Жидкая', 'Подкислители'],
+  tagline: lang === 'EN'
+    ? 'More than pH'
+    : lang === 'AZ'
+    ? 'pH-dan çox'
+    : 'Больше чем pH',
+  features: lang === 'EN'
+    ? 'X-Cid Plus is a cutting-edge solution designed to enhance water hygiene by offering robust protection against bacterial contamination. One of its key functionalities is the effective reduction of water pH, creating a hostile environment to harmful bacteria. When X-Cid Plus is used in conjunction with chlorine, it synergistically boosts the concentration of free chlorine in the water. This enhancement significantly improves the efficacy of disinfection processes, ensuring that the water remains cleaner and safer for use.'
+    : lang === 'AZ'
+    ? 'X-Cid Plus, bakterial çirklənməyə qarşı güclü qorunma təmin edərək su gigiyenasını yaxşılaşdırmaq üçün nəzərdə tutulmuş qabaqcıl bir həlldir. Onun əsas funksiyalarından biri, zərərli bakteriyalar üçün düşmən mühit yaradan suyun pH-nı effektiv şəkildə azaltmaqdır. X-Cid Plus xlor ilə birlikdə istifadə edildikdə, sudakı sərbəst xlor konsentrasiyasını sinergik olaraq artırır. Bu güclənmə dezinfeksiya proseslərinin effektivliyini əhəmiyyətli dərəcədə artırır, suyun daha təmiz və istifadə üçün daha təhlükəsiz qalmasını təmin edir.'
+    : 'X-Cid Plus — это передовое решение, разработанное для улучшения гигиены воды путём обеспечения надёжной защиты от бактериального загрязнения. Одной из ключевых функций является эффективное снижение pH воды, создающее враждебную среду для вредоносных бактерий. При использовании X-Cid Plus совместно с хлором синергетически повышается концентрация свободного хлора в воде. Это существенно улучшает эффективность дезинфекционных процессов, обеспечивая более чистую и безопасную воду.',
+  benefits: lang === 'EN' ? [
+    'Protects against bacterial contamination',
+    'Reduces water pH',
+    'Enhances free chlorine concentration when used with chlorine',
+  ] : lang === 'AZ' ? [
+    'Bakterial çirklənmədən qoruyur',
+    'Suyun pH-nı azaldır',
+    'Xlorla birlikdə istifadə edildikdə sərbəst xlor konsentrasiyasını artırır',
+  ] : [
+    'Защищает от бактериального загрязнения',
+    'Снижает pH воды',
+    'Повышает концентрацию свободного хлора при совместном применении с хлором',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '1 l bottle, 5 l and 25 l canisters' : lang === 'AZ' ? '1 l şişə, 5 l və 25 l kanisterlər' : '1 л бутылка, 5 л и 25 л канистры',
+});
 
 export default function CalDPhosModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -67,7 +93,7 @@ export default function CalDPhosModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -84,7 +110,7 @@ export default function CalDPhosModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#f87171' }}>
-                More than pH
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -103,10 +129,10 @@ export default function CalDPhosModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(248,113,113,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    X-Cid Plus is a cutting-edge solution designed to enhance water hygiene by offering robust protection against bacterial contamination. One of its key functionalities is the effective reduction of water pH, creating a hostile environment to harmful bacteria. When X-Cid Plus is used in conjunction with chlorine, it synergistically boosts the concentration of free chlorine in the water. This enhancement significantly improves the efficacy of disinfection processes, ensuring that the water remains cleaner and safer for use.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -120,10 +146,10 @@ export default function CalDPhosModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(248,113,113,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#f87171' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -136,9 +162,9 @@ export default function CalDPhosModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(248,113,113,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(248,113,113,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(248,113,113,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    1 l bottle, 5 l and 25 l canisters
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

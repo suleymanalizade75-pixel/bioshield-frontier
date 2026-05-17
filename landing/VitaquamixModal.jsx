@@ -1,17 +1,41 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Vitaquamix', 'Powder', 'Vitamin/Mineral/Amino Acids'];
-
-const benefits = [
-  'Uniform growth',
-  'Resistance to stress',
-  'Increased livability',
-  'Cost-efficient rearing',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Vitaquamix', 'Powder', 'Vitamin/Mineral/Amino Acids'] : lang === 'AZ' ? ['Vitaquamix', 'Toz', 'Vitamin/Mineral/Amino Turşular'] : ['Vitaquamix', 'Порошок', 'Витамин/Минерал/Аминокислоты'],
+  tagline: lang === 'EN' ? 'From hatch to harvest' : lang === 'AZ' ? 'Çıxışdan hasılata qədər' : 'От вылупления до сбора урожая',
+  features: lang === 'EN'
+    ? 'Vitaquamix supplies essential vitamins, minerals, and amino acids to improve the growth rate and performance of aqua species. Helps to increase resistance against diseases and stress. Highly bioavailable vitamins and amino acids ensure maximum efficacy. Additionally, Fructooligosaccharides (FOS) and yeast extract (MOS) boost the immune system to support against stress conditions.'
+    : lang === 'AZ'
+    ? 'Vitaquamix su növlərinin böyümə sürətini və məhsuldarlığını artırmaq üçün vacib vitaminlər, minerallar və aminturşular təmin edir. Xəstəliklərə və stresə qarşı müqavimətin artırılmasına kömək edir. Yüksək bioloji mənimsənilə bilən vitaminlər və aminturşular maksimum effektivliyi təmin edir. Əlavə olaraq, frukto-oliqosakaridlər (FOS) və maya ekstraktı (MOS) stres şəraitinə qarşı dəstək üçün immun sistemini gücləndirir.'
+    : 'Vitaquamix обеспечивает водные виды необходимыми витаминами, минералами и аминокислотами для улучшения темпов роста и продуктивности. Помогает повысить устойчивость к болезням и стрессу. Высокобиодоступные витамины и аминокислоты обеспечивают максимальную эффективность. Кроме того, фруктоолигосахариды (ФОС) и экстракт дрожжей (МОС) укрепляют иммунную систему для противодействия стрессовым условиям.',
+  benefits: lang === 'EN' ? [
+    'Uniform growth',
+    'Resistance to stress',
+    'Increased livability',
+    'Cost-efficient rearing',
+  ] : lang === 'AZ' ? [
+    'Bərabər böyümə',
+    'Stresə davamlılıq',
+    'Artan yaşama qabiliyyəti',
+    'Xərcsəmərəli yetişdirmə',
+  ] : [
+    'Равномерный рост',
+    'Устойчивость к стрессу',
+    'Повышенная выживаемость',
+    'Экономически эффективное выращивание',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '10 kg and 25 kg craft bags' : lang === 'AZ' ? '10 kq və 25 kq kraft torbaları' : '10 кг и 25 кг крафт-мешки',
+});
 
 export default function VitaquamixModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -68,7 +92,7 @@ export default function VitaquamixModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -85,7 +109,7 @@ export default function VitaquamixModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#22c55e' }}>
-                From hatch to harvest
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -104,10 +128,10 @@ export default function VitaquamixModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(34,197,94,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Vitaquamix supplies essential vitamins, minerals, and amino acids to improve the growth rate and performance of aqua species. Helps to increase resistance against diseases and stress. Highly bioavailable vitamins and amino acids ensure maximum efficacy. Additionally, Fructooligosaccharides (FOS) and yeast extract (MOS) boost the immune system to support against stress conditions.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -121,10 +145,10 @@ export default function VitaquamixModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(34,197,94,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#22c55e' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -137,9 +161,9 @@ export default function VitaquamixModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(34,197,94,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(34,197,94,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(34,197,94,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    10 kg and 25 kg craft bags
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

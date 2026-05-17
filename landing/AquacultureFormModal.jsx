@@ -2,29 +2,59 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, Pill } from 'lucide-react';
 import ScaleQualityModal from './ScaleQualityModal';
+import { useLang } from '@/lib/i18n';
 
-const FORM_CATEGORIES = [
+const getFormCategories = (lang) => [
   {
     key: 'scale-quality',
-    label: 'Power of Probiotic & Prebiotic',
+    label: lang === 'EN' ? 'Power of Probiotic & Prebiotic' : lang === 'AZ' ? 'Probiotik & Prebiotik Gücü' : 'Сила Пробиотика & Пребиотика',
     color: '#1A82C0',
     glow: 'rgba(26,130,192,0.5)',
-    desc: 'Gut health is a major key to success. A smart combination of efficient probiotic and prebiotic for improved performance.',
+    desc: lang === 'EN'
+      ? 'Gut health is a major key to success. A smart combination of efficient probiotic and prebiotic for improved performance.'
+      : lang === 'AZ'
+      ? 'Bağırsaq sağlamlığı uğurun əsas açarıdır. Yaxşılaşdırılmış performans üçün effektiv probiotik və prebiotiklərin ağıllı kombinasiyası.'
+      : 'Здоровье кишечника — главный ключ к успеху. Умная комбинация эффективных пробиотика и пребиотика для улучшения производительности.',
     products: [
-      { name: 'GrowAqua', modal: 'scale-quality', desc: 'Smart mixture of probiotic and prebiotic for superior gut health and performance.' },
+      {
+        name: 'GrowAqua',
+        modal: 'scale-quality',
+        desc: lang === 'EN'
+          ? 'Smart mixture of probiotic and prebiotic for superior gut health and performance.'
+          : lang === 'AZ'
+          ? 'Üstün bağırsaq sağlamlığı və performansı üçün probiotik və prebiotiklərin ağıllı qarışığı.'
+          : 'Умная смесь пробиотика и пребиотика для превосходного здоровья кишечника и производительности.',
+      },
     ],
   },
   {
     key: 'skeletal',
-    label: 'Skeletal Development',
+    label: lang === 'EN' ? 'Skeletal Development' : lang === 'AZ' ? 'İskelet İnkişafı' : 'Скелетное Развитие',
     color: '#1A82C0',
     glow: 'rgba(26,130,192,0.5)',
-    desc: 'Phospholipids & DHA for skeletal and fin tissue development.',
+    desc: lang === 'EN'
+      ? 'Phospholipids & DHA for skeletal and fin tissue development.'
+      : lang === 'AZ'
+      ? 'İskelet və üzgəc toxumasının inkişafı üçün fosfolipidlər & DHA.'
+      : 'Фосфолипиды & ДГК для развития скелетных и плавниковых тканей.',
     products: [
-      { name: 'FinStrong', desc: 'Advanced formula supporting bone structure and fin growth.' },
+      {
+        name: 'FinStrong',
+        desc: lang === 'EN'
+          ? 'Advanced formula supporting bone structure and fin growth.'
+          : lang === 'AZ'
+          ? 'Sümük strukturu və üzgəc böyüməsini dəstəkləyən qabaqcıl formul.'
+          : 'Передовая формула, поддерживающая костную структуру и рост плавников.',
+      },
     ],
   },
 ];
+
+const getLabels = (lang) => ({
+  headerTitle: lang === 'EN' ? 'AQUACULTURE · FARM' : lang === 'AZ' ? 'AKVAKULTURA · FERMA' : 'АКВАКУЛЬТУРА · ФЕРМА',
+  headerSub: lang === 'EN' ? 'FORMULATION OPTIONS FOR FISH & SHRIMP' : lang === 'AZ' ? 'BALIK & KARİDES ÜÇÜN FORMUL SEÇİMLƏRİ' : 'ВАРИАНТЫ ФОРМУЛИРОВОК ДЛЯ РЫБ & КРЕВЕТОК',
+  hint: lang === 'EN' ? '↑ SELECT A CATEGORY TO VIEW PRODUCTS' : lang === 'AZ' ? '↑ MƏHSULLARI GÖRMƏK ÜÇÜN KATEQORİYA SEÇİN' : '↑ ВЫБЕРИТЕ КАТЕГОРИЮ ДЛЯ ПРОСМОТРА ПРОДУКТОВ',
+});
 
 function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
   return (
@@ -65,6 +95,10 @@ function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
 }
 
 export default function AquacultureFormModal({ open, onClose }) {
+  const { lang } = useLang();
+  const FORM_CATEGORIES = getFormCategories(lang);
+  const labels = getLabels(lang);
+
   const [hovered, setHovered] = useState(null);
   const [locked, setLocked] = useState(null);
   const [scaleQualityOpen, setScaleQualityOpen] = useState(false);
@@ -130,10 +164,10 @@ export default function AquacultureFormModal({ open, onClose }) {
                 </div>
                 <div>
                   <div className="font-orbitron text-sm font-bold text-white tracking-[3px]">
-                    AQUACULTURE · FARM
+                    {labels.headerTitle}
                   </div>
                   <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: 'rgba(26,130,192,0.55)' }}>
-                    FORMULATION OPTIONS FOR FISH & SHRIMP
+                    {labels.headerSub}
                   </div>
                 </div>
               </div>
@@ -176,7 +210,7 @@ export default function AquacultureFormModal({ open, onClose }) {
                     className="text-center py-3"
                   >
                     <span className="font-mono text-[10px] tracking-[4px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                      ↑ SELECT A CATEGORY TO VIEW PRODUCTS
+                      {labels.hint}
                     </span>
                   </motion.div>
                 ) : (

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, X, Star } from 'lucide-react';
 import { SPECIES_ILLUSTRATIONS } from '@/lib/illustrationData';
+import { useLang } from '@/lib/i18n';
 
 const SPECIES_EMOJI = {
   'Bovine': '🐄', 'Porcine': '🐷', 'Ovine': '🐑', 'Poultry': '🐔',
@@ -10,6 +11,8 @@ const SPECIES_EMOJI = {
 };
 
 export default function ComparisonCard({ vaccine, position }) {
+  const { t } = useLang();
+  const cp = t.compare_page;
   const isLeft = position === 0;
 
   return (
@@ -57,11 +60,11 @@ export default function ComparisonCard({ vaccine, position }) {
         {/* Key Specs */}
         <div className="grid grid-cols-2 gap-3 py-4 border-y border-white/10">
           <div>
-            <p className="text-xs font-orbitron text-muted-foreground mb-1">DOSAGE FORM</p>
+            <p className="text-xs font-orbitron text-muted-foreground mb-1">{cp.dosageForm}</p>
             <p className="text-sm font-semibold text-foreground">{vaccine.dosage_form?.replace('Injectable - ', '')}</p>
           </div>
           <div>
-            <p className="text-xs font-orbitron text-muted-foreground mb-1">PRICE</p>
+            <p className="text-xs font-orbitron text-muted-foreground mb-1">{cp.price}</p>
             <p className="text-sm font-semibold text-primary">${vaccine.price?.toFixed(2)}</p>
           </div>
         </div>
@@ -69,7 +72,7 @@ export default function ComparisonCard({ vaccine, position }) {
         {/* Features */}
         {vaccine.features?.length > 0 && (
           <div>
-            <p className="text-xs font-orbitron font-bold text-muted-foreground mb-2">KEY FEATURES</p>
+            <p className="text-xs font-orbitron font-bold text-muted-foreground mb-2">{t.product_expanded.features}</p>
             <ul className="space-y-1">
               {vaccine.features.slice(0, 3).map((feature, i) => (
                 <li key={i} className="text-xs text-gray-400 flex items-start gap-2">
@@ -83,7 +86,7 @@ export default function ComparisonCard({ vaccine, position }) {
 
         {/* Species Coverage */}
         <div>
-          <p className="text-xs font-orbitron font-bold text-muted-foreground mb-3">SPECIES COVERAGE ({vaccine.species?.length})</p>
+          <p className="text-xs font-orbitron font-bold text-muted-foreground mb-3">{cp.speciesCoverageLabel} ({vaccine.species?.length})</p>
           <div className="grid grid-cols-2 gap-2">
             {vaccine.species?.map((species) => (
               <div

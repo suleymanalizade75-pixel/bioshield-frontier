@@ -1,16 +1,37 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Smooth Pro', 'Liquid', 'Carcass Quality'];
-
-const benefits = [
-  'Helps to calm animals down, avoiding excessive movements and energy waste',
-  'The calming effect helps to avoid bruising and scratches during harvest or transport',
-  'Better skin integrity and fewer rejections at the slaughterhouse due to skin lesions',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Smooth Pro', 'Liquid', 'Carcass Quality'] : lang === 'AZ' ? ['Smooth Pro', 'Maye', 'Karkas Keyfiyyəti'] : ['Smooth Pro', 'Жидкая', 'Качество Туши'],
+  features: lang === 'EN'
+    ? 'In broilers, excessive movements during the last few days of rearing or struggles during transport and harvest may cause scratches and bruising. This is economically significant as it causes increased mortality and higher carcass rejection at the slaughterhouse. In cattle and pigs, the reduction of excessive movement has a positive effect on body energy savings and therefore on the costs of feeding.'
+    : lang === 'AZ'
+    ? 'Bройler toyuqlarda, yetişdirmənin son günlərindəki həddindən artıq hərəkətlər və ya nəqliyyat və yığım zamanı mübarizə cızıqlara və göyərmiş yerlərin əmələ gəlməsinə səbəb ola bilər. Bu, artmış ölümlülüyə və kəsimxanada karkas rəddiyəsinin artmasına səbəb olduğundan iqtisadi cəhətdən əhəmiyyətlidir. Qaramal və donuzlarda həddindən artıq hərəkətin azaldılması bədən enerjisinin qənaətinə, buna görə də yem xərclərinin azalmasına müsbət təsir göstərir.'
+    : 'У бройлеров чрезмерные движения в последние дни выращивания или борьба во время транспортировки и забоя могут вызвать царапины и синяки. Это экономически значимо, так как приводит к повышенной смертности и большему браку туш на скотобойне. У крупного рогатого скота и свиней снижение чрезмерной подвижности оказывает положительное влияние на экономию энергии организма и, следовательно, на затраты на кормление.',
+  benefits: lang === 'EN' ? [
+    'Helps to calm animals down, avoiding excessive movements and energy waste',
+    'The calming effect helps to avoid bruising and scratches during harvest or transport',
+    'Better skin integrity and fewer rejections at the slaughterhouse due to skin lesions',
+  ] : lang === 'AZ' ? [
+    'Heyvanları sakitləşdirərək həddindən artıq hərəkəti və enerji itkisini önləyir',
+    'Sakinləşdirici təsir yığım və ya nəqliyyat zamanı göyərmiş yerlərin və cızıqların qarşısını alır',
+    'Daha yaxşı dəri bütövlüyü və dəri lezyonlarına görə kəsimxanada daha az rədd',
+  ] : [
+    'Успокаивает животных, предотвращая чрезмерные движения и потерю энергии',
+    'Успокаивающий эффект помогает избежать синяков и царапин при убое или транспортировке',
+    'Лучшая целостность кожного покрова и меньше отбраковки на скотобойне из-за поражений кожи',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şişə, 5 l və 25 l kanister' : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function SmoothProModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -67,7 +88,7 @@ export default function SmoothProModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -103,10 +124,10 @@ export default function SmoothProModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    In broilers, excessive movements during the last few days of rearing or struggles during transport and harvest may cause scratches and bruising. This is economically significant as it causes increased mortality and higher carcass rejection at the slaughterhouse. In cattle and pigs, the reduction of excessive movement has a positive effect on body energy savings and therefore on the costs of feeding.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -120,10 +141,10 @@ export default function SmoothProModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#34d399' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -136,9 +157,9 @@ export default function SmoothProModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(52,211,153,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

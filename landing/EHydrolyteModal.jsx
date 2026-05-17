@@ -1,19 +1,46 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['E-Hydrolyte + C Pro', 'Water Soluble Powder', 'Heat Stress'];
-
-const benefits = [
-  'Vitamin C is a support to the immune system.',
-  'Provides a fast-absorbing source of energy',
-  'Provides all electrolytes needed to avoid dehydration',
-  'Supports the blood pH balance',
-  'Replaces electrolytes lost caused by stress',
-  'Reduces the effects of the heat stress',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['E-Hydrolyte + C Pro', 'Water Soluble Powder', 'Heat Stress'] : lang === 'AZ' ? ['E-Hydrolyte + C Pro', 'Suda Həll Olan Toz', 'İstilik Stresi'] : ['E-Hydrolyte + C Pro', 'Водорастворимый Порошок', 'Тепловой Стресс'],
+  features: lang === 'EN'
+    ? 'Vitamin C supports the immune system and acts as an antistress agent. Electrolytes are important for reducing the effects of heat stress in hot conditions, increasing heat resistance, and maintaining an optimal blood pH level. They also help reduce stress due to transport, new housing, climate change, and high production yields. In addition, a quick source of energy helps prevent dehydration and aids in the animal\'s recovery from it. The energy source in this formula provides fast, available energy that promotes the absorption of water and sodium at the intestinal level. The balanced mixture of electrolytes provides an effective blood buffer.'
+    : lang === 'AZ'
+    ? 'C vitamini immunitet sistemini dəstəkləyir və antistres agent kimi fəaliyyət göstərir. Elektrolitlər isti şəraitdə istilik stresinin təsirlərini azaltmaq, istiliyə dözümlülüyü artırmaq və optimal qan pH səviyyəsini saxlamaq üçün vacibdir. Onlar həmçinin nəqliyyat, yeni yerləşdirmə, iqlim dəyişikliyi və yüksək məhsuldarlıqdan yaranan stresi azaltmağa kömək edir. Bundan əlavə, sürətli enerji mənbəyi susuzluğun qarşısını alır və heyvanın ondan sağalmasına kömək edir. Bu formuladakı enerji mənbəyi bağırsaq səviyyəsində su və natriumun sorulmasını təşviq edən sürətli, əlçatan enerji təmin edir. Elektrolitlərin balanslaşdırılmış qarışığı effektiv qan tamponu təmin edir.'
+    : 'Витамин C поддерживает иммунную систему и действует как антистрессовый агент. Электролиты важны для снижения воздействия теплового стресса в жарких условиях, повышения термоустойчивости и поддержания оптимального pH крови. Они также помогают снизить стресс, вызванный транспортировкой, сменой условий содержания, изменением климата и высокой продуктивностью. Кроме того, быстрый источник энергии помогает предотвратить обезвоживание и способствует восстановлению животного. Источник энергии в этой формуле обеспечивает быстро доступную энергию, стимулирующую всасывание воды и натрия на кишечном уровне. Сбалансированная смесь электролитов обеспечивает эффективный буфер крови.',
+  benefits: lang === 'EN' ? [
+    'Vitamin C is a support to the immune system.',
+    'Provides a fast-absorbing source of energy',
+    'Provides all electrolytes needed to avoid dehydration',
+    'Supports the blood pH balance',
+    'Replaces electrolytes lost caused by stress',
+    'Reduces the effects of the heat stress',
+  ] : lang === 'AZ' ? [
+    'C vitamini immunitet sistemini dəstəkləyir.',
+    'Sürətli sorulmaqla enerji mənbəyi təmin edir',
+    'Susuzluğun qarşısını almaq üçün lazım olan bütün elektrolitləri təmin edir',
+    'Qanın pH balansını dəstəkləyir',
+    'Stress nəticəsində itirilən elektrolitləri əvəz edir',
+    'İstilik stresinin təsirlərini azaldır',
+  ] : [
+    'Витамин C поддерживает иммунную систему.',
+    'Обеспечивает быстро усваиваемый источник энергии',
+    'Обеспечивает все электролиты, необходимые для предотвращения обезвоживания',
+    'Поддерживает баланс pH крови',
+    'Восполняет электролиты, потерянные вследствие стресса',
+    'Снижает воздействие теплового стресса',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '1 kg and 20 kg aluminum bags, 5 kg and 10 kg buckets' : lang === 'AZ' ? '1 kq və 20 kq alüminium torba, 5 kq və 10 kq vedrə' : '1 кг и 20 кг алюминиевые пакеты, 5 кг и 10 кг вёдра',
+});
 
 export default function EHydrolyteModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -70,7 +97,7 @@ export default function EHydrolyteModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -106,10 +133,10 @@ export default function EHydrolyteModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(251,191,36,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Vitamin C supports the immune system and acts as an antistress agent. Electrolytes are important for reducing the effects of heat stress in hot conditions, increasing heat resistance, and maintaining an optimal blood pH level. They also help reduce stress due to transport, new housing, climate change, and high production yields. In addition, a quick source of energy helps prevent dehydration and aids in the animal's recovery from it. The energy source in this formula provides fast, available energy that promotes the absorption of water and sodium at the intestinal level. The balanced mixture of electrolytes provides an effective blood buffer.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -123,10 +150,10 @@ export default function EHydrolyteModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(251,191,36,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#fbbf24' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -139,9 +166,9 @@ export default function EHydrolyteModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(251,191,36,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,191,36,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,191,36,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    1 kg and 20 kg aluminum bags, 5 kg and 10 kg buckets
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

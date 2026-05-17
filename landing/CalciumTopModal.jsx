@@ -1,16 +1,47 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Calcium Top', 'Liquid', 'Quick Recovery'];
-
-const benefits = [
-  'Helps to prevent milk fever',
-  'Helps to reduce subclinical hypocalcemia',
-  'In cases of clinical milk fever it helps to recover quickly',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Calcium Top', 'Liquid', 'Quick Recovery'] : lang === 'AZ' ? ['Calcium Top', 'Maye', 'Sürətli Bərpa'] : ['Calcium Top', 'Жидкая', 'Быстрое восстановление'],
+  tagline: lang === 'EN'
+    ? 'Quick Recovery · Mineral Support'
+    : lang === 'AZ'
+    ? 'Sürətli Bərpa · Mineral Dəstəyi'
+    : 'Быстрое Восстановление · Минеральная Поддержка',
+  taglineSubtext: lang === 'EN'
+    ? 'Stand up again'
+    : lang === 'AZ'
+    ? 'Yenidən ayağa qalx'
+    : 'Встань снова',
+  features: lang === 'EN'
+    ? 'Clinical or sub-clinical hypocalcemia eventually causes loss of appetite, paralysis, lack of movement, decrease in the functioning of smooth muscles and in some cases heart failure. Calcium Top supplies the necessary amounts of calcium and other minerals that take part in the calcium metabolism. The high concentrated minerals in this special liquid formulation are highly bio-available for a quick response. The correct application is easy because of the suitable bottle shape.'
+    : lang === 'AZ'
+    ? 'Klinik və ya subklinik hipokalsemiya nəticədə iştah itkisinə, iflicə, hərəkətsizliyə, düz əzələlərin fəaliyyətinin azalmasına və bəzi hallarda ürək çatışmazlığına səbəb olur. Calcium Top kalsium metabolizmində iştirak edən zəruri miqdarda kalsium və digər minerallar təmin edir. Bu xüsusi maye formulasiyasındakı yüksək konsentratlı minerallar sürətli cavab üçün yüksək bioyararlanıma malikdir. Uyğun şüşə forması sayəsində düzgün tətbiq asandır.'
+    : 'Клиническая или субклиническая гипокальциемия в конечном счёте вызывает потерю аппетита, паралич, отсутствие движений, снижение функции гладких мышц и в ряде случаев сердечную недостаточность. Calcium Top поставляет необходимое количество кальция и других минералов, участвующих в кальциевом обмене. Высококонцентрированные минералы в этой специальной жидкой формуле обладают высокой биодоступностью для быстрого ответа. Правильное применение упрощено благодаря удобной форме флакона.',
+  benefits: lang === 'EN' ? [
+    'Helps to prevent milk fever',
+    'Helps to reduce subclinical hypocalcemia',
+    'In cases of clinical milk fever it helps to recover quickly',
+  ] : lang === 'AZ' ? [
+    'Süd qızdırmasının qarşısının alınmasına kömək edir',
+    'Subklinik hipokalsemiyanı azaltmağa kömək edir',
+    'Klinik süd qızdırması hallarında sürətli bərpaya kömək edir',
+  ] : [
+    'Помогает предотвратить родильный парез',
+    'Помогает снизить субклиническую гипокальциемию',
+    'При клиническом родильном парезе помогает быстро восстановиться',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '500 ml high neck bottle' : lang === 'AZ' ? '500 ml uzun boğazlı şişə' : '500 мл флакон с высоким горлышком',
+});
 
 export default function CalciumTopModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -67,7 +98,7 @@ export default function CalciumTopModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -98,13 +129,13 @@ export default function CalciumTopModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(34,211,102,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Clinical or sub-clinical hypocalcemia eventually causes loss of appetite, paralysis, lack of movement, decrease in the functioning of smooth muscles and in some cases heart failure. Calcium Top supplies the necessary amounts of calcium and other minerals that take part in the calcium metabolism. The high concentrated minerals in this special liquid formulation are highly bio-available for a quick response. The correct application is easy because of the suitable bottle shape.
+                    {data.features}
                   </p>
                   <div className="font-inter text-xs leading-relaxed mt-3" style={{ color: 'rgba(34,211,102,0.8)' }}>
-                    <strong>Quick Recovery · Mineral Support</strong><br />Stand up again
+                    <strong>{data.tagline}</strong><br />{data.taglineSubtext}
                   </div>
                 </div>
               </div>
@@ -118,10 +149,10 @@ export default function CalciumTopModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(34,211,102,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-2">
-                  {benefits.map(b => (
+                  {data.benefits.map(b => (
                     <div key={b} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#22c55e' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -134,9 +165,9 @@ export default function CalciumTopModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(34,211,102,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(34,211,102,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(34,211,102,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    500 ml high neck bottle
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

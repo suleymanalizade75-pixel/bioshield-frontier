@@ -1,17 +1,45 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Bacflora® BR', 'Powder', 'NAGP'];
-
-const benefits = [
-  'Helps to improve the performance of the animals.',
-  'Provides probiotics to maintain a good flora in the gut.',
-  'A good alternative for growth promoters.',
-  'It provides hepatic support.',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Bacflora® BR', 'Powder', 'NAGP'] : lang === 'AZ' ? ['Bacflora® BR', 'Toz', 'NAGP'] : ['Bacflora® BR', 'Порошок', 'NAGP'],
+  tagline: lang === 'EN'
+    ? 'The Synbiotic for a perfect gut'
+    : lang === 'AZ'
+    ? 'Mükəmməl bağırsaq üçün Sinbiotik'
+    : 'Синбиотик для здорового кишечника',
+  features: lang === 'EN'
+    ? 'In the path of animal performance, gut health is a major key to success. Bacflora® BR is the smart mixture of an efficient probiotic with two prebiotics coming from yeast (S.cerevisiae) and chicory. Probiotics and prebiotics in Bacflora® BR help to improve the animal\'s performance and have a direct effect against the unwanted micro-organisms in the gut. Also, organic acids and the salt of the acid in Bacflora® BR are enhancing digestion and antimicrobial effect, resulting in a better feed intake as well as a healthier gut.'
+    : lang === 'AZ'
+    ? 'Heyvan performansı yolunda bağırsaq sağlamlığı uğurun əsas açarıdır. Bacflora® BR, maya (S.cerevisiae) və hindibadan əldə edilən iki prebiotiklə birlikdə səmərəli bir probiotikanın ağıllı qarışığıdır. Bacflora® BR-dəki probiotiklər və prebiotiklər heyvanın performansını artırmağa kömək edir və bağırsaqdakı istenmeyen mikroorqanizmlərə qarşı birbaşa təsir göstərir. Bundan əlavə, Bacflora® BR-dəki üzvi turşular və turşunun duzu həzmi və antimikrobiyal təsiri gücləndirir, bu da daha yaxşı yem qəbuluna və daha sağlam bir bağırsağa gətirib çıxarır.'
+    : 'На пути к высокой продуктивности животных здоровье кишечника является ключевым фактором успеха. Bacflora® BR — это умная комбинация эффективного пробиотика с двумя пребиотиками, полученными из дрожжей (S.cerevisiae) и цикория. Пробиотики и пребиотики в Bacflora® BR помогают улучшить продуктивность животных и оказывают прямое воздействие против нежелательных микроорганизмов в кишечнике. Органические кислоты и соли кислот в Bacflora® BR также усиливают пищеварение и антимикробный эффект, что приводит к лучшему потреблению корма и более здоровому кишечнику.',
+  benefits: lang === 'EN' ? [
+    'Helps to improve the performance of the animals.',
+    'Provides probiotics to maintain a good flora in the gut.',
+    'A good alternative for growth promoters.',
+    'It provides hepatic support.',
+  ] : lang === 'AZ' ? [
+    'Heyvanların performansını yaxşılaşdırmağa kömək edir.',
+    'Bağırsaqda yaxşı flora saxlamaq üçün probiotiklər təmin edir.',
+    'Böyümə stimulatorları üçün yaxşı alternativdir.',
+    'Qaraciyər dəstəyi təmin edir.',
+  ] : [
+    'Помогает улучшить продуктивность животных.',
+    'Обеспечивает пробиотики для поддержания здоровой микрофлоры кишечника.',
+    'Является хорошей альтернативой стимуляторам роста.',
+    'Обеспечивает поддержку функции печени.',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '10 kg and 25 kg craft bag' : lang === 'AZ' ? '10 kq və 25 kq kraft torba' : '10 кг и 25 кг крафт-мешок',
+});
 
 export default function BacfloraBRModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -68,7 +96,7 @@ export default function BacfloraBRModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -85,7 +113,7 @@ export default function BacfloraBRModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#34d399' }}>
-                The Synbiotic for a perfect gut
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -104,10 +132,10 @@ export default function BacfloraBRModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    In the path of animal performance, gut health is a major key to success. Bacflora® BR is the smart mixture of an efficient probiotic with two prebiotics coming from yeast (S.cerevisiae) and chicory. Probiotics and prebiotics in Bacflora® BR help to improve the animal's performance and have a direct effect against the unwanted micro-organisms in the gut. Also, organic acids and the salt of the acid in Bacflora® BR are enhancing digestion and antimicrobial effect, resulting in a better feed intake as well as a healthier gut.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -121,10 +149,10 @@ export default function BacfloraBRModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#34d399' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -137,9 +165,9 @@ export default function BacfloraBRModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(52,211,153,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    10 kg and 25 kg craft bag
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

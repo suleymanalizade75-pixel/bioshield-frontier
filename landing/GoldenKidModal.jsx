@@ -1,33 +1,127 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, Download } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
 const COLOR = '#f59e0b';
 
-const BENEFITS = [
-  'Made of the finest and highest quality raw materials',
-  'Special formulation for providing maximum health and growth',
-  'High palatability',
-  'High solubility, even in cold water',
-  'High digestibility and balanced fat and protein content',
-  'Use of probiotics and prebiotics to support gastrointestinal tract function',
-  'Easy and time-saving preparation',
-  'High economic efficiency',
-  'Reduce disease transmission through goat milk consumption',
-  'Pasteurized and free of any microbial contamination',
-  'Excellent for use in automatic machines',
-];
+const getModalData = (lang) => ({
+  fortifiedLabel: lang === 'EN' ? 'FORTIFIED WITH' : lang === 'AZ' ? 'ZƏNGİNLƏŞDİRİLMİŞ' : 'ОБОГАЩЕНО',
 
-const NUTRIENTS = [
-  { name: 'Crude protein, min', value: '24%' },
-  { name: 'Crude fat, min', value: '20%' },
-  { name: 'Crude fiber, max', value: '0.1%' },
-  { name: 'Calcium, min', value: '0.9%' },
-  { name: 'Phosphorus, min', value: '0.6%' },
-  { name: 'Ash', value: '7.2%' },
-];
+  fortifiedItems: lang === 'EN'
+    ? ['Prebiotics & Probiotics', 'Fat & Water-Soluble Vitamins', 'Trace Minerals']
+    : lang === 'AZ'
+    ? ['Prebiotiklər və Probiotiklər', 'Yağda və Suda Həll Olan Vitaminlər', 'İz Minerallar']
+    : ['Пребиотики и Пробиотики', 'Жиро- и Водорастворимые Витамины', 'Микроэлементы'],
+
+  analysisLabel: lang === 'EN' ? 'GUARANTEED ANALYSIS' : lang === 'AZ' ? 'ZƏMANƏTLI ANALİZ' : 'ГАРАНТИРОВАННЫЙ АНАЛИЗ',
+
+  nutrientLabel: lang === 'EN' ? 'NUTRIENT' : lang === 'AZ' ? 'QİDA MADDƏSİ' : 'ПИТАТЕЛЬНОЕ ВЕЩЕСТВО',
+  valueLabel: lang === 'EN' ? 'VALUE' : lang === 'AZ' ? 'DƏYƏR' : 'ЗНАЧЕНИЕ',
+
+  nutrients: lang === 'EN'
+    ? [
+        { name: 'Crude protein, min', value: '24%' },
+        { name: 'Crude fat, min', value: '20%' },
+        { name: 'Crude fiber, max', value: '0.1%' },
+        { name: 'Calcium, min', value: '0.9%' },
+        { name: 'Phosphorus, min', value: '0.6%' },
+        { name: 'Ash', value: '7.2%' },
+      ]
+    : lang === 'AZ'
+    ? [
+        { name: 'Xam zülal, min', value: '24%' },
+        { name: 'Xam yağ, min', value: '20%' },
+        { name: 'Xam lif, maks', value: '0.1%' },
+        { name: 'Kalsium, min', value: '0.9%' },
+        { name: 'Fosfor, min', value: '0.6%' },
+        { name: 'Kül', value: '7.2%' },
+      ]
+    : [
+        { name: 'Сырой протеин, мин', value: '24%' },
+        { name: 'Сырой жир, мин', value: '20%' },
+        { name: 'Сырая клетчатка, макс', value: '0.1%' },
+        { name: 'Кальций, мин', value: '0.9%' },
+        { name: 'Фосфор, мин', value: '0.6%' },
+        { name: 'Зола', value: '7.2%' },
+      ],
+
+  ingredientsLabel: lang === 'EN' ? 'INGREDIENTS' : lang === 'AZ' ? 'TƏRKİB' : 'СОСТАВ',
+
+  ingredients: lang === 'EN'
+    ? 'Skim milk powder, whey powder, whey protein concentrate (WPC), vegetable oils, minerals and vitamins, pre & probiotics'
+    : lang === 'AZ'
+    ? 'Yağsız süd tozu, zərdab tozu, zərdab zülal konsentratı (WPC), bitki yağları, mineral və vitaminlər, pre və probiotiklər'
+    : 'Обезжиренное сухое молоко, сухая сыворотка, концентрат сывороточного белка (WPC), растительные масла, минералы и витамины, пре- и пробиотики',
+
+  mixingLabel: lang === 'EN' ? 'MIXING & FEEDING DIRECTIONS' : lang === 'AZ' ? 'QARIŞDIRMA VƏ YEMLƏMƏ TƏLİMATLARI' : 'ИНСТРУКЦИИ ПО СМЕШИВАНИЮ И КОРМЛЕНИЮ',
+
+  mixingSteps: lang === 'EN'
+    ? [
+        '▸ Mix 1 kg of milk powder into 6 L of hot water (50 °C) to produce 7 L of reconstituted milk.',
+        '▸ Distribute at 42 °C for kids.',
+      ]
+    : lang === 'AZ'
+    ? [
+        '▸ 7 L bərpa edilmiş süd əldə etmək üçün 1 kq süd tozunu 6 L isti suya (50 °C) qarışdırın.',
+        '▸ Oğlaqlar üçün 42 °C-də paylaşdırın.',
+      ]
+    : [
+        '▸ Смешайте 1 кг сухого молока в 6 л горячей воды (50 °C) для получения 7 л восстановленного молока.',
+        '▸ Раздавайте при 42 °C для козлят.',
+      ],
+
+  benefitsLabel: lang === 'EN' ? 'KEY BENEFITS' : lang === 'AZ' ? 'ƏSAS FAYDALARI' : 'КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА',
+
+  benefits: lang === 'EN'
+    ? [
+        'Made of the finest and highest quality raw materials',
+        'Special formulation for providing maximum health and growth',
+        'High palatability',
+        'High solubility, even in cold water',
+        'High digestibility and balanced fat and protein content',
+        'Use of probiotics and prebiotics to support gastrointestinal tract function',
+        'Easy and time-saving preparation',
+        'High economic efficiency',
+        'Reduce disease transmission through goat milk consumption',
+        'Pasteurized and free of any microbial contamination',
+        'Excellent for use in automatic machines',
+      ]
+    : lang === 'AZ'
+    ? [
+        'Ən yaxşı və ən yüksək keyfiyyətli xammaldan hazırlanmışdır',
+        'Maksimum sağlamlıq və böyümə üçün xüsusi formula',
+        'Yüksək yeyilmə dərəcəsi',
+        'Soyuq suda belə yüksək həlledicilik',
+        'Yüksək həzmolunma və balanslaşdırılmış yağ və zülal tərkibi',
+        'Mədə-bağırsaq traktının funksiyasını dəstəkləmək üçün probiotik və prebiotiklərin istifadəsi',
+        'Asan və vaxt qənaət edən hazırlanma',
+        'Yüksək iqtisadi səmərəlilik',
+        'Keçi südü istehlakı yolu ilə xəstəlik ötürülməsini azaldır',
+        'Pastörizasiya olunmuş və hər hansı mikrobial çirklənmədən azad',
+        'Avtomatik maşınlarda istifadə üçün əla',
+      ]
+    : [
+        'Изготовлен из лучшего сырья высочайшего качества',
+        'Специальная формула для обеспечения максимального здоровья и роста',
+        'Высокая поедаемость',
+        'Высокая растворимость даже в холодной воде',
+        'Высокая усвояемость и сбалансированное содержание жира и белка',
+        'Использование про- и пребиотиков для поддержки функции ЖКТ',
+        'Простое и экономящее время приготовление',
+        'Высокая экономическая эффективность',
+        'Снижение передачи болезней через потребление козьего молока',
+        'Пастеризован и свободен от микробного загрязнения',
+        'Отлично подходит для использования в автоматических машинах',
+      ],
+
+  downloadLabel: lang === 'EN' ? 'DOWNLOAD PRODUCT DATASHEET (PDF)' : lang === 'AZ' ? 'MƏHSUL MƏLUMAT SƏHİFƏSİNİ YÜKLƏ (PDF)' : 'СКАЧАТЬ ТЕХНИЧЕСКОЕ ОПИСАНИЕ (PDF)',
+});
 
 export default function GoldenKidModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
+
   return (
     <AnimatePresence>
       {open && (
@@ -70,9 +164,9 @@ export default function GoldenKidModal({ open, onClose }) {
               {/* Fortified with */}
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
                 className="rounded-xl p-4" style={{ background: `${COLOR}0d`, border: `1px solid ${COLOR}28` }}>
-                <p className="font-orbitron text-xs font-bold mb-2" style={{ color: COLOR }}>FORTIFIED WITH</p>
+                <p className="font-orbitron text-xs font-bold mb-2" style={{ color: COLOR }}>{data.fortifiedLabel}</p>
                 <div className="flex flex-wrap gap-2">
-                  {['Prebiotics & Probiotics', 'Fat & Water-Soluble Vitamins', 'Trace Minerals'].map(f => (
+                  {data.fortifiedItems.map(f => (
                     <span key={f} className="font-inter text-[11px] px-2.5 py-1 rounded-lg" style={{ background: `${COLOR}18`, color: `${COLOR}dd`, border: `1px solid ${COLOR}30` }}>{f}</span>
                   ))}
                 </div>
@@ -81,17 +175,17 @@ export default function GoldenKidModal({ open, onClose }) {
               {/* Analysis + Ingredients side by side */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                  <p className="font-orbitron text-[10px] font-bold mb-2" style={{ color: COLOR }}>GUARANTEED ANALYSIS</p>
+                  <p className="font-orbitron text-[10px] font-bold mb-2" style={{ color: COLOR }}>{data.analysisLabel}</p>
                   <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${COLOR}28` }}>
                     <table className="w-full text-xs">
                       <thead>
                         <tr style={{ background: `${COLOR}18` }}>
-                          <th className="px-3 py-2 text-left font-orbitron text-[9px]" style={{ color: COLOR }}>NUTRIENT</th>
-                          <th className="px-3 py-2 text-right font-orbitron text-[9px]" style={{ color: COLOR }}>VALUE</th>
+                          <th className="px-3 py-2 text-left font-orbitron text-[9px]" style={{ color: COLOR }}>{data.nutrientLabel}</th>
+                          <th className="px-3 py-2 text-right font-orbitron text-[9px]" style={{ color: COLOR }}>{data.valueLabel}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {NUTRIENTS.map(({ name, value }, i) => (
+                        {data.nutrients.map(({ name, value }, i) => (
                           <tr key={name} style={{ background: i % 2 === 0 ? `${COLOR}06` : 'transparent', borderTop: `1px solid ${COLOR}10` }}>
                             <td className="px-3 py-2 font-inter" style={{ color: 'rgba(255,255,255,0.6)' }}>{name}</td>
                             <td className="px-3 py-2 text-right font-bold font-orbitron text-[11px]" style={{ color: COLOR }}>{value}</td>
@@ -103,18 +197,19 @@ export default function GoldenKidModal({ open, onClose }) {
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.13 }}>
-                  <p className="font-orbitron text-[10px] font-bold mb-2" style={{ color: COLOR }}>INGREDIENTS</p>
+                  <p className="font-orbitron text-[10px] font-bold mb-2" style={{ color: COLOR }}>{data.ingredientsLabel}</p>
                   <div className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${COLOR}20` }}>
                     <p className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      Skim milk powder, whey powder, whey protein concentrate (WPC), vegetable oils, minerals and vitamins, pre & probiotics
+                      {data.ingredients}
                     </p>
                   </div>
 
                   <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${COLOR}20` }}>
-                    <p className="font-orbitron text-[9px] font-bold mb-1.5" style={{ color: COLOR }}>MIXING & FEEDING DIRECTIONS</p>
+                    <p className="font-orbitron text-[9px] font-bold mb-1.5" style={{ color: COLOR }}>{data.mixingLabel}</p>
                     <ul className="space-y-1">
-                      <li className="font-inter text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>▸ Mix 1 kg of milk powder into 6 L of hot water (50 °C) to produce 7 L of reconstituted milk.</li>
-                      <li className="font-inter text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>▸ Distribute at 42 °C for kids.</li>
+                      {data.mixingSteps.map((step, i) => (
+                        <li key={i} className="font-inter text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>{step}</li>
+                      ))}
                     </ul>
                   </div>
                 </motion.div>
@@ -122,9 +217,9 @@ export default function GoldenKidModal({ open, onClose }) {
 
               {/* Benefits */}
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.17 }}>
-                <p className="font-orbitron text-[10px] font-bold mb-3" style={{ color: COLOR }}>KEY BENEFITS</p>
+                <p className="font-orbitron text-[10px] font-bold mb-3" style={{ color: COLOR }}>{data.benefitsLabel}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {BENEFITS.map((b, i) => (
+                  {data.benefits.map((b, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: COLOR }} />
                       <span className="font-inter text-[10px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>{b}</span>
@@ -139,7 +234,7 @@ export default function GoldenKidModal({ open, onClose }) {
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[3px] transition-all hover:opacity-80"
                   style={{ color: `${COLOR}99` }}>
-                  <Download className="w-3 h-3" /> DOWNLOAD PRODUCT DATASHEET (PDF)
+                  <Download className="w-3 h-3" /> {data.downloadLabel}
                 </a>
               </motion.div>
             </div>

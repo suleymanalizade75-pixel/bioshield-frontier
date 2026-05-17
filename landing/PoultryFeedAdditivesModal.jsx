@@ -7,15 +7,20 @@ import EverwellModal from './EverwellModal';
 import CalpronaModal from './CalpronaModal';
 import NutriProfitModal from './NutriProfitModal';
 import NutriXtendModal from './NutriXtendModal';
+import { useLang } from '@/lib/i18n';
 
-const PRODUCTS = [
+const getProducts = (lang) => [
   {
     key: 'feed-enzymes',
-    name: 'Feed Enzymes',
+    name: lang === 'EN' ? 'Feed Enzymes' : lang === 'AZ' ? 'Yem Fermentləri' : 'Ферменты Корма',
     tm: false,
     color: '#34d399',
     glow: 'rgba(52,211,153,0.5)',
-    desc: 'Advanced enzymatic complexes that break down anti-nutritional factors and enhance nutrient digestibility across all feed types.',
+    desc: lang === 'EN'
+      ? 'Advanced enzymatic complexes that break down anti-nutritional factors and enhance nutrient digestibility across all feed types.'
+      : lang === 'AZ'
+      ? 'Bütün yem növlərindəki antinutrisional amilləri parçalayan və qida həzmini artıran qabaqcıl ferment kompleksləri.'
+      : 'Передовые ферментные комплексы, расщепляющие антипитательные факторы и повышающие усвояемость питательных веществ во всех видах кормов.',
   },
   {
     key: 'myvatex',
@@ -23,7 +28,11 @@ const PRODUCTS = [
     tm: true,
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.5)',
-    desc: 'AF-11 Emulsifier — premium emulsification technology that optimizes fat digestion and improves energy utilization in poultry diets.',
+    desc: lang === 'EN'
+      ? 'AF-11 Emulsifier — premium emulsification technology that optimizes fat digestion and improves energy utilization in poultry diets.'
+      : lang === 'AZ'
+      ? 'AF-11 Emulsifikator — quş yemləmə pəhrizlərində yağ həzmini optimallaşdıran və enerji istifadəsini yaxşılaşdıran premium emulsifikasiya texnologiyası.'
+      : 'AF-11 Эмульгатор — премиальная технология эмульгирования, оптимизирующая переваривание жиров и улучшающая усвоение энергии в рационах птицы.',
   },
   {
     key: 'everwell',
@@ -31,23 +40,35 @@ const PRODUCTS = [
     tm: true,
     color: '#38bdf8',
     glow: 'rgba(56,189,248,0.5)',
-    desc: 'PT 100 — a comprehensive performance supplement designed to support growth, vitality and overall flock uniformity.',
+    desc: lang === 'EN'
+      ? 'PT 100 — a comprehensive performance supplement designed to support growth, vitality and overall flock uniformity.'
+      : lang === 'AZ'
+      ? 'PT 100 — böyüməni, canlılığı və ümumi sürü bərabərliyini dəstəkləmək üçün nəzərdə tutulmuş hərtərəfli performans əlavəsi.'
+      : 'PT 100 — комплексная добавка для производительности, предназначенная для поддержки роста, жизнеспособности и однородности стада.',
   },
   {
     key: 'calproma',
-    name: 'Calproma Feed Additives',
+    name: lang === 'EN' ? 'Calproma Feed Additives' : lang === 'AZ' ? 'Calproma Yem Əlavələri' : 'Calproma Кормовые Добавки',
     tm: false,
     color: '#fbbf24',
     glow: 'rgba(251,191,36,0.5)',
-    desc: 'Specialized calcium and mineral additives formulated for optimal bone development, eggshell quality and metabolic support.',
+    desc: lang === 'EN'
+      ? 'Specialized calcium and mineral additives formulated for optimal bone development, eggshell quality and metabolic support.'
+      : lang === 'AZ'
+      ? 'Optimal sümük inkişafı, yumurta qabığı keyfiyyəti və metabolik dəstək üçün hazırlanmış xüsusi kalsium və mineral əlavələri.'
+      : 'Специализированные добавки кальция и минералов, разработанные для оптимального развития костей, качества яичной скорлупы и метаболической поддержки.',
   },
   {
     key: 'nutri-profit',
-    name: 'Nutri-Profit Conc',
+    name: lang === 'EN' ? 'Nutri-Profit Conc' : lang === 'AZ' ? 'Nutri-Profit Konsentrat' : 'Nutri-Profit Конц',
     tm: false,
     color: '#f97316',
     glow: 'rgba(249,115,22,0.5)',
-    desc: 'High-density nutrient concentrate delivering precision amino acid profiles and vitamins for maximum feed conversion efficiency.',
+    desc: lang === 'EN'
+      ? 'High-density nutrient concentrate delivering precision amino acid profiles and vitamins for maximum feed conversion efficiency.'
+      : lang === 'AZ'
+      ? 'Maksimum yem çevrilmə səmərəliliyi üçün dəqiq amin turşusu profilləri və vitaminlər təqdim edən yüksək sıxlıqlı qida konsentratı.'
+      : 'Высококонцентрированный питательный концентрат, обеспечивающий точные профили аминокислот и витаминов для максимальной эффективности конверсии корма.',
   },
   {
     key: 'nutri-xtend',
@@ -56,9 +77,18 @@ const PRODUCTS = [
     suffix: 'Optim',
     color: '#e879f9',
     glow: 'rgba(232,121,249,0.5)',
-    desc: 'Optim — next-generation nutrient extension technology that prolongs bioavailability and ensures sustained performance gains throughout production cycles.',
+    desc: lang === 'EN'
+      ? 'Optim — next-generation nutrient extension technology that prolongs bioavailability and ensures sustained performance gains throughout production cycles.'
+      : lang === 'AZ'
+      ? 'Optim — istehsal dövrlərindən sonra bioloji mövcudluğu uzadan və davamlı performans artımını təmin edən növbəti nəsil qida uzatma texnologiyası.'
+      : 'Optim — технология питательного расширения следующего поколения, продлевающая биодоступность и обеспечивающая устойчивый рост производительности на протяжении производственных циклов.',
   },
 ];
+
+const getLabels = (lang) => ({
+  headerTitle: lang === 'EN' ? 'FEED ADDITIVES' : lang === 'AZ' ? 'YEM ƏLAVƏLƏRİ' : 'КОРМОВЫЕ ДОБАВКИ',
+  headerSub: lang === 'EN' ? 'POULTRY · NUTRITION SOLUTIONS' : lang === 'AZ' ? 'QUŞÇULUQ · QİDALANMA HƏLLƏRİ' : 'ПТИЦЕВОДСТВО · РЕШЕНИЯ ПО ПИТАНИЮ',
+});
 
 function ProductBadge({ name, tm, suffix, color }) {
   return (
@@ -75,6 +105,10 @@ function ProductBadge({ name, tm, suffix, color }) {
 }
 
 export default function PoultryFeedAdditivesModal({ open, onClose }) {
+  const { lang } = useLang();
+  const PRODUCTS = getProducts(lang);
+  const labels = getLabels(lang);
+
   const [agalProOpen, setAgalProOpen] = useState(false);
   const [myvatexOpen, setMyvatexOpen] = useState(false);
   const [everwellOpen, setEverwellOpen] = useState(false);
@@ -143,10 +177,10 @@ export default function PoultryFeedAdditivesModal({ open, onClose }) {
                 </div>
                 <div>
                   <div className="font-orbitron text-sm font-bold text-white tracking-[3px]">
-                    FEED ADDITIVES
+                    {labels.headerTitle}
                   </div>
                   <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: 'rgba(52,211,153,0.55)' }}>
-                    POULTRY · NUTRITION SOLUTIONS
+                    {labels.headerSub}
                   </div>
                 </div>
               </div>

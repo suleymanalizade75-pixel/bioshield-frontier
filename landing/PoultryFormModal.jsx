@@ -12,72 +12,107 @@ import TurboFluidModal from './TurboFluidModal';
 import MineralForteModal from './MineralForteModal';
 import VitaminESEModal from './VitaminESEModal';
 import VitaminAD3EModal from './VitaminAD3EModal';
+import { useLang } from '@/lib/i18n';
 
-const FORM_CATEGORIES = [
+const getFormCategories = (lang) => [
   {
     key: 'acidifiers',
-    label: 'Acidifiers',
+    label: lang === 'EN' ? 'Acidifiers' : lang === 'AZ' ? 'Asidifikatorlar' : 'Ацидификаторы',
     Icon: FlaskConical,
     color: '#f87171',
     glow: 'rgba(248,113,113,0.5)',
-    desc: 'Water hygiene solutions for pathogen control and bacterial contamination protection.',
+    desc: lang === 'EN'
+      ? 'Water hygiene solutions for pathogen control and bacterial contamination protection.'
+      : lang === 'AZ'
+      ? 'Patogen nəzarəti və bakterial çirklənmə qorunması üçün su gigiyenası həlləri.'
+      : 'Решения для гигиены воды по контролю патогенов и защите от бактериального загрязнения.',
     products: ['X-Cid Plus'],
   },
   {
     key: 'carcass-quality',
-    label: 'Carcass Quality',
+    label: lang === 'EN' ? 'Carcass Quality' : lang === 'AZ' ? 'Karkas Keyfiyyəti' : 'Качество Туши',
     Icon: Activity,
     color: '#34d399',
     glow: 'rgba(52,211,153,0.5)',
-    desc: 'Solutions for superior meat quality, skin integrity and minimal processing rejections.',
+    desc: lang === 'EN'
+      ? 'Solutions for superior meat quality, skin integrity and minimal processing rejections.'
+      : lang === 'AZ'
+      ? 'Üstün ət keyfiyyəti, dəri bütövlüyü və minimal emal reddləri üçün həllər.'
+      : 'Решения для превосходного качества мяса, целостности кожи и минальных отказов при переработке.',
     products: ['Smooth Pro'],
   },
   {
     key: 'eggshell-quality',
-    label: 'Eggshell Quality',
+    label: lang === 'EN' ? 'Eggshell Quality' : lang === 'AZ' ? 'Yumurta Qabığı Keyfiyyəti' : 'Качество Яичной Скорлупы',
     Icon: Egg,
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.5)',
-    desc: 'Calcium, phosphorus & vitamin D3 for robust shell integrity and hatchability.',
+    desc: lang === 'EN'
+      ? 'Calcium, phosphorus & vitamin D3 for robust shell integrity and hatchability.'
+      : lang === 'AZ'
+      ? 'Möhkəm qabıq bütövlüyü və çıxış qabiliyyəti üçün Kalsium, Fosfor & D3 Vitamini.'
+      : 'Кальций, фосфор & витамин D3 для прочной целостности скорлупы и выводимости.',
     products: ['Cal D Phos®'],
   },
   {
     key: 'heat-stress',
-    label: 'Heat Stress',
+    label: lang === 'EN' ? 'Heat Stress' : lang === 'AZ' ? 'İstilik Stresi' : 'Тепловой Стресс',
     Icon: Thermometer,
     color: '#fbbf24',
     glow: 'rgba(251,191,36,0.5)',
-    desc: 'Electrolyte & antioxidant support for thermoregulation during high-temperature periods.',
+    desc: lang === 'EN'
+      ? 'Electrolyte & antioxidant support for thermoregulation during high-temperature periods.'
+      : lang === 'AZ'
+      ? 'Yüksək temperatur dövrlərində termorequlyasiya üçün elektrolit & antioksidant dəstəyi.'
+      : 'Электролитная & антиоксидантная поддержка для терморегуляции в периоды высоких температур.',
     products: ['E-Hydrolyte + C Pro'],
   },
   {
     key: 'pathogen-pressure',
-    label: 'Pathogen Pressure',
+    label: lang === 'EN' ? 'Pathogen Pressure' : lang === 'AZ' ? 'Patogen Təzyiqi' : 'Патогенное Давление',
     Icon: Shield,
     color: '#1a9952',
     glow: 'rgba(26,153,82,0.6)',
-    desc: 'Antimicrobial botanicals & immune modulators for disease resistance.',
+    desc: lang === 'EN'
+      ? 'Antimicrobial botanicals & immune modulators for disease resistance.'
+      : lang === 'AZ'
+      ? 'Xəstəliyə qarşı müqavimət üçün antimikrob botanik bitkilər & immun modulatorlar.'
+      : 'Антимикробные ботаники & иммунные модуляторы для устойчивости к болезням.',
     products: ['X-Cid Plus'],
   },
   {
     key: 'strong-bones',
-    label: 'Strong Bones',
+    label: lang === 'EN' ? 'Strong Bones' : lang === 'AZ' ? 'Güclü Sümüklər' : 'Крепкие Кости',
     Icon: Heart,
     color: '#fb923c',
     glow: 'rgba(251,146,60,0.5)',
-    desc: 'Mineral complexes & collagen precursors for skeletal strength and bone integrity.',
+    desc: lang === 'EN'
+      ? 'Mineral complexes & collagen precursors for skeletal strength and bone integrity.'
+      : lang === 'AZ'
+      ? 'İskelet gücü və sümük bütövlüyü üçün mineral komplekslər & kollagen prekursorları.'
+      : 'Минеральные комплексы & предшественники коллагена для прочности скелета и целостности костей.',
     products: ['Cal D Phos®'],
   },
   {
     key: 'vitamin-mineral-amino',
-    label: 'Vit/Min/Amino Acids',
+    label: lang === 'EN' ? 'Vit/Min/Amino Acids' : lang === 'AZ' ? 'Vit/Min/Amin Turşuları' : 'Вит/Мин/Аминокислоты',
     Icon: Zap,
     color: '#38bdf8',
     glow: 'rgba(56,189,248,0.5)',
-    desc: 'Balanced micronutrient & amino acid profile for metabolic optimization.',
+    desc: lang === 'EN'
+      ? 'Balanced micronutrient & amino acid profile for metabolic optimization.'
+      : lang === 'AZ'
+      ? 'Metabolik optimallaşdırma üçün balanslaşdırılmış mikroqida & amin turşusu profili.'
+      : 'Сбалансированный профиль микронутриентов & аминокислот для метаболической оптимизации.',
     products: ['Turbo Fluid', 'Mineral Forte', 'Vitamin E+Se', 'Vitamin AD3E'],
   },
 ];
+
+const getLabels = (lang) => ({
+  headerTitle: lang === 'EN' ? 'POULTRY · FARM' : lang === 'AZ' ? 'QUŞÇULUQ · FERMA' : 'ПТИЦЕВОДСТВО · ФЕРМА',
+  headerSub: lang === 'EN' ? '7 FORMULATION CATEGORIES' : lang === 'AZ' ? '7 FORMUL KATEQORİYASI' : '7 КАТЕГОРИЙ ФОРМУЛЯЦИЙ',
+  hint: lang === 'EN' ? '↑ HOVER A CATEGORY TO EXPLORE PRODUCTS' : lang === 'AZ' ? '↑ MƏHSULLARI KƏŞF ETMƏK ÜÇÜN KATEQORİYA ÜZƏRINDƏN KEÇİN' : '↑ НАВЕДИТЕ НА КАТЕГОРИЮ ДЛЯ ПРОСМОТРА ПРОДУКТОВ',
+});
 
 function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
   const { Icon } = cat;
@@ -120,6 +155,10 @@ function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
 }
 
 export default function PoultryFormModal({ open, onClose }) {
+  const { lang } = useLang();
+  const FORM_CATEGORIES = getFormCategories(lang);
+  const labels = getLabels(lang);
+
   const [hovered, setHovered] = useState(null);
   const [locked, setLocked] = useState(null);
   const [calDPhosOpen, setCalDPhosOpen] = useState(false);
@@ -207,10 +246,10 @@ export default function PoultryFormModal({ open, onClose }) {
                 </div>
                 <div>
                   <div className="font-orbitron text-sm font-bold text-white tracking-[3px]">
-                    POULTRY · FARM
+                    {labels.headerTitle}
                   </div>
                   <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: 'rgba(26,79,192,0.55)' }}>
-                    7 FORMULATION CATEGORIES
+                    {labels.headerSub}
                   </div>
                 </div>
               </div>
@@ -254,7 +293,7 @@ export default function PoultryFormModal({ open, onClose }) {
                     className="text-center py-3"
                   >
                     <span className="font-mono text-[10px] tracking-[4px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                      ↑ HOVER A CATEGORY TO EXPLORE PRODUCTS
+                      {labels.hint}
                     </span>
                   </motion.div>
                 ) : (

@@ -1,16 +1,38 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Vitamin AD3E', 'Liquid', 'Vitamin/Mineral/Amino Acids'];
-
-const benefits = [
-  'Supports better health status, immune response, hatchability, and somatic quality',
-  'Provides resistance to diseases and promotes health, growth, and fertility',
-  'Improved feed efficiency, FCR, and weight gain',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Vitamin AD3E', 'Liquid', 'Vitamin/Mineral/Amino Acids'] : lang === 'AZ' ? ['Vitamin AD3E', 'Maye', 'Vitamin/Mineral/Amino Turşular'] : ['Витамин AD3E', 'Жидкая', 'Витамин/Минерал/Аминокислоты'],
+  tagline: lang === 'EN' ? 'Advanced protection' : lang === 'AZ' ? 'Gücləndirilmiş qorunma' : 'Расширенная защита',
+  features: lang === 'EN'
+    ? 'Vitamin deficiency leads to metabolic malfunctions, resulting in growth depression, lower performance and immunity, and an increased susceptibility to diseases. Vitamin AD3E provides the livestock animals with the optimal amount of requirements. Especially vitamins A, D3, and E have been proven to be efficient in improving performance parameters in all species.'
+    : lang === 'AZ'
+    ? 'Vitamin çatışmazlığı metabolik pozuntulara gətirib çıxarır — bu isə böyümənin ləngiməsinə, performans və immunitetin azalmasına, xəstəliklərə qarşı həssaslığın artmasına səbəb olur. Vitamin AD3E heyvanlara lazımi vitaminlərin optimal miqdarda verilməsini təmin edir. Xüsusilə A, D3 və E vitaminlərinin bütün növlərdə məhsuldarlıq göstəricilərini yaxşılaşdırmaqda effektiv olduğu sübut edilmişdir.'
+    : 'Дефицит витаминов приводит к метаболическим нарушениям, выражающимся в торможении роста, снижении продуктивности и иммунитета, а также в повышенной восприимчивости к болезням. Vitamin AD3E обеспечивает сельскохозяйственных животных оптимальным количеством необходимых витаминов. Особенно витамины A, D3 и E доказали свою эффективность в улучшении показателей продуктивности у всех видов животных.',
+  benefits: lang === 'EN' ? [
+    'Supports better health status, immune response, hatchability, and somatic quality',
+    'Provides resistance to diseases and promotes health, growth, and fertility',
+    'Improved feed efficiency, FCR, and weight gain',
+  ] : lang === 'AZ' ? [
+    'Sağlamlıq vəziyyətini, immun cavabını, cücərmə qabiliyyətini və somatik keyfiyyəti dəstəkləyir',
+    'Xəstəliklərə qarşı müqavimət yaradır, sağlamlığı, böyüməni və fertilliliyi təşviq edir',
+    'Yem effektivliyini, YDN-ni və çəki artımını yaxşılaşdırır',
+  ] : [
+    'Поддерживает состояние здоровья, иммунный ответ, выводимость и соматическое качество',
+    'Обеспечивает устойчивость к болезням и способствует здоровью, росту и фертильности',
+    'Улучшение усвояемости корма, конверсии корма (FCR) и привеса',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml, and 1 l bottles, 5 l, and 25 l canisters' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şüşələr, 5 l və 25 l kanisterlər' : '250 мл, 500 мл и 1 л бутылки, 5 л и 25 л канистры',
+});
 
 export default function VitaminAD3EModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -67,7 +89,7 @@ export default function VitaminAD3EModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -84,7 +106,7 @@ export default function VitaminAD3EModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#fbbf24' }}>
-                Advanced protection
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -103,10 +125,10 @@ export default function VitaminAD3EModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(251,191,36,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Vitamin deficiency leads to metabolic malfunctions, resulting in growth depression, lower performance and immunity, and an increased susceptibility to diseases. Vitamin AD3E provides the livestock animals with the optimal amount of requirements. Especially vitamins A, D3, and E have been proven to be efficient in improving performance parameters in all species.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -120,10 +142,10 @@ export default function VitaminAD3EModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(251,191,36,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#fbbf24' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -136,9 +158,9 @@ export default function VitaminAD3EModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(251,191,36,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,191,36,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,191,36,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml, and 1 l bottles, 5 l, and 25 l canisters
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

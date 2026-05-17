@@ -1,19 +1,46 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['NAGP', 'Growth Enhancement', 'Non-Antibiotic', 'Liquid'];
-
-const benefits = [
-  'Increased intake, performance parameters and growth',
-  'Better feed efficiency',
-  'Powerful anti-oxidant activity',
-  'Support in case of digestive disorders',
-  'Cost-effective, profitable solution to growth enhancement',
-  'Alternative or support to conventional treatments',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['NAGP', 'Growth Enhancement', 'Non-Antibiotic', 'Liquid'] : lang === 'AZ' ? ['NAGP', 'Böyümə Stimulasiyası', 'Antibiotik deyil', 'Maye'] : ['NAGP', 'Стимуляция Роста', 'Без антибиотиков', 'Жидкая'],
+  features: lang === 'EN'
+    ? 'OregoPlus® is a rich combination of essential oils designed to support performance parameters, making an effective non-antibiotic growth enhancer. Rich combination of essential oils are cost effective due to low dosage. OregoPlus® is ideal to be used throughout as a growth enhancer, or during high risk periods, where it offers its powerful antioxidant activity.'
+    : lang === 'AZ'
+    ? 'OregoPlus®, performans göstəricilərini dəstəkləmək üçün nəzərdə tutulmuş efir yağlarının zəngin birləşməsidir və effektiv antibiotik olmayan böyümə stimulatoru rolunu oynayır. Efir yağlarının zəngin birləşməsi aşağı dozası sayəsində xərc effektivliyi yüksəkdir. OregoPlus® böyümə stimulatoru kimi davamlı istifadə üçün və ya güclü antioksidant fəaliyyətini göstərdiyi yüksək risk dövrlərində istifadə üçün idealdır.'
+    : 'OregoPlus® — это богатая комбинация эфирных масел, разработанная для поддержки показателей продуктивности, что делает её эффективным безантибиотиковым стимулятором роста. Богатая комбинация эфирных масел является экономически эффективной благодаря низкой дозировке. OregoPlus® идеально подходит для постоянного использования в качестве стимулятора роста или в периоды высокого риска, когда он проявляет свою мощную антиоксидантную активность.',
+  benefits: lang === 'EN' ? [
+    'Increased intake, performance parameters and growth',
+    'Better feed efficiency',
+    'Powerful anti-oxidant activity',
+    'Support in case of digestive disorders',
+    'Cost-effective, profitable solution to growth enhancement',
+    'Alternative or support to conventional treatments',
+  ] : lang === 'AZ' ? [
+    'Artırılmış qəbul, performans göstəriciləri və böyümə',
+    'Daha yaxşı yem effektivliyi',
+    'Güclü antioksidant fəaliyyəti',
+    'Həzm pozuntuları zamanı dəstək',
+    'Böyümə stimulasiyası üçün xərc effektiv, gəlirli həll',
+    'Ənənəvi müalicələrə alternativ və ya dəstək',
+  ] : [
+    'Повышенное потребление, показатели продуктивности и рост',
+    'Лучшая эффективность корма',
+    'Мощная антиоксидантная активность',
+    'Поддержка при нарушениях пищеварения',
+    'Экономически эффективное, прибыльное решение для стимуляции роста',
+    'Альтернатива или дополнение к традиционным методам лечения',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şişə, 5 l və 25 l kanister' : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function OregoPlusModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -70,7 +97,7 @@ export default function OregoPlusModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -101,10 +128,10 @@ export default function OregoPlusModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(232,121,249,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    OregoPlus® is a rich combination of essential oils designed to support performance parameters, making an effective non-antibiotic growth enhancer. Rich combination of essential oils are cost effective due to low dosage. OregoPlus® is ideal to be used throughout as a growth enhancer, or during high risk periods, where it offers its powerful antioxidant activity.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -118,10 +145,10 @@ export default function OregoPlusModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(232,121,249,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {benefits.map(b => (
+                  {data.benefits.map(b => (
                     <div key={b} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#e879f9' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -134,9 +161,9 @@ export default function OregoPlusModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(232,121,249,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(232,121,249,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(232,121,249,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

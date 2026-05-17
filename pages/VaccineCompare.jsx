@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Search, ChevronDown, X } from 'lucide-react';
 import ComparisonCard from '@/components/products/ComparisonCard';
+import { useLang } from '@/lib/i18n';
 
 const SPECIES_EMOJI = {
   'Bovine': '🐄', 'Porcine': '🐷', 'Ovine': '🐑', 'Poultry': '🐔',
@@ -12,6 +13,8 @@ const SPECIES_EMOJI = {
 };
 
 export default function VaccineCompare() {
+  const { t, lang } = useLang();
+  const cp = t.compare_page;
   const [selected, setSelected] = useState([null, null]);
   const [search, setSearch] = useState('');
   const [showDropdown, setShowDropdown] = useState(null);
@@ -22,7 +25,7 @@ export default function VaccineCompare() {
   });
 
   const vaccines = products.filter(p => p.category === 'Vaccines');
-  const filtered = vaccines.filter(v => 
+  const filtered = vaccines.filter(v =>
     v.name.toLowerCase().includes(search.toLowerCase()) ||
     v.description?.toLowerCase().includes(search.toLowerCase())
   );
@@ -59,9 +62,9 @@ export default function VaccineCompare() {
       >
         <div className="max-w-7xl mx-auto px-6 py-6">
           <h1 className="font-orbitron text-4xl font-bold text-foreground flex items-center gap-3 mb-2">
-            <span className="text-3xl">⚖️</span> Peyvənd Müqayisəsi
+            <span className="text-3xl">⚖️</span> {cp.title}
           </h1>
-          <p className="text-muted-foreground">Peyvənd dozaları və növ əhatəsini yan-yana müqayisə edin</p>
+          <p className="text-muted-foreground">{cp.subtitle}</p>
         </div>
       </motion.div>
 
@@ -77,14 +80,14 @@ export default function VaccineCompare() {
               className="relative"
             >
               <label className="block font-orbitron text-sm font-bold text-foreground mb-3">
-                {index === 0 ? 'PEYVƏNDİ SEÇİN 1' : 'PEYVƏNDİ SEÇİN 2'}
+                {index === 0 ? cp.selectVaccine1 : cp.selectVaccine2}
               </label>
 
               {selected[index] ? (
                 <div className="p-4 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-between">
                   <div>
                     <p className="font-orbitron font-bold text-foreground">{selected[index].name}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{selected[index].species?.length || 0} species coverage</p>
+                    <p className="text-xs text-muted-foreground mt-1">{selected[index].species?.length || 0} {cp.speciesCoverage}</p>
                   </div>
                   <button
                     onClick={() => setSelected(prev => {
@@ -103,7 +106,7 @@ export default function VaccineCompare() {
                     onClick={() => setShowDropdown(showDropdown === index ? null : index)}
                     className="w-full p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-left font-orbitron text-sm text-foreground flex items-center justify-between"
                   >
-                    Peyvənd seçin...
+                    {cp.chooseVaccine}
                     <ChevronDown className="w-4 h-4 text-muted-foreground" />
                   </button>
 
@@ -118,7 +121,7 @@ export default function VaccineCompare() {
                         <div className="p-4 rounded-xl border border-primary/30 bg-card shadow-2xl">
                           <input
                             type="text"
-                            placeholder="Peyvəndlər axtarın..."
+                            placeholder={cp.searchVaccines}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="w-full px-3 py-2 rounded-lg bg-background border border-white/10 text-foreground placeholder-muted-foreground text-sm mb-3 focus:outline-none focus:border-primary/50"
@@ -131,7 +134,7 @@ export default function VaccineCompare() {
                                 className="w-full p-3 rounded-lg hover:bg-white/10 transition-all text-left border border-transparent hover:border-primary/30"
                               >
                                 <p className="font-orbitron font-bold text-foreground text-sm">{vaccine.name}</p>
-                                <p className="text-xs text-muted-foreground mt-1">{vaccine.species?.length || 0} növ</p>
+                                <p className="text-xs text-muted-foreground mt-1">{vaccine.species?.length || 0} {cp.species}</p>
                               </button>
                             ))}
                           </div>
@@ -170,13 +173,13 @@ export default function VaccineCompare() {
                 className="p-6 rounded-xl border border-primary/20 bg-card/50 backdrop-blur-sm"
               >
                 <h3 className="font-orbitron text-lg font-bold text-foreground mb-6 flex items-center gap-2">
-                  <span>📊</span> Növ Əhatə Analizi
+                  <span>📊</span> {cp.speciesAnalysis}
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Common Species */}
                   <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                    <p className="font-orbitron text-sm font-bold text-green-400 mb-3">HƏR İKİSİ ({commonSpecies.length})</p>
+                    <p className="font-orbitron text-sm font-bold text-green-400 mb-3">{cp.bothCover} ({commonSpecies.length})</p>
                     <div className="space-y-2">
                       {commonSpecies.length > 0 ? (
                         commonSpecies.map(sp => (
@@ -186,14 +189,14 @@ export default function VaccineCompare() {
                           </div>
                         ))
                       ) : (
-                        <p className="text-xs text-muted-foreground">Ümumi növ yoxdur</p>
+                        <p className="text-xs text-muted-foreground">{cp.noCommon}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Unique to Vaccine 1 */}
                   <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
-                    <p className="font-orbitron text-sm font-bold text-blue-400 mb-3">{selected[0].name.split(' ')[0]} TƏK ({uniqueLeft.length})</p>
+                    <p className="font-orbitron text-sm font-bold text-blue-400 mb-3">{selected[0].name.split(' ')[0]} {cp.onlyLabel} ({uniqueLeft.length})</p>
                     <div className="space-y-2">
                       {uniqueLeft.length > 0 ? (
                         uniqueLeft.map(sp => (
@@ -203,14 +206,14 @@ export default function VaccineCompare() {
                           </div>
                         ))
                       ) : (
-                        <p className="text-xs text-muted-foreground">Unikal növ yoxdur</p>
+                        <p className="text-xs text-muted-foreground">{cp.noUnique}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Unique to Vaccine 2 */}
                   <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                    <p className="font-orbitron text-sm font-bold text-purple-400 mb-3">{selected[1].name.split(' ')[0]} TƏK ({uniqueRight.length})</p>
+                    <p className="font-orbitron text-sm font-bold text-purple-400 mb-3">{selected[1].name.split(' ')[0]} {cp.onlyLabel} ({uniqueRight.length})</p>
                     <div className="space-y-2">
                       {uniqueRight.length > 0 ? (
                         uniqueRight.map(sp => (
@@ -220,7 +223,7 @@ export default function VaccineCompare() {
                           </div>
                         ))
                       ) : (
-                        <p className="text-xs text-muted-foreground">Unikal növ yoxdur</p>
+                        <p className="text-xs text-muted-foreground">{cp.noUnique}</p>
                       )}
                     </div>
                   </div>
@@ -234,35 +237,35 @@ export default function VaccineCompare() {
                 transition={{ delay: 0.3 }}
                 className="overflow-x-auto p-6 rounded-xl border border-primary/20 bg-card/50 backdrop-blur-sm"
               >
-                <h3 className="font-orbitron text-lg font-bold text-foreground mb-6">📋 Ətraflı Müqayisə</h3>
+                <h3 className="font-orbitron text-lg font-bold text-foreground mb-6">📋 {cp.detailedComparison}</h3>
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-white/10">
-                      <th className="text-left py-3 px-4 font-orbitron font-bold text-muted-foreground">XÜSUSİYYƏT</th>
+                      <th className="text-left py-3 px-4 font-orbitron font-bold text-muted-foreground">{cp.specification}</th>
                       <th className="text-left py-3 px-4 font-orbitron font-bold text-foreground">{selected[0].name}</th>
                       <th className="text-left py-3 px-4 font-orbitron font-bold text-foreground">{selected[1].name}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4 font-semibold text-foreground">Doz Forması</td>
+                      <td className="py-3 px-4 font-semibold text-foreground">{cp.dosageForm}</td>
                       <td className="py-3 px-4 text-gray-400">{selected[0].dosage_form || 'N/A'}</td>
                       <td className="py-3 px-4 text-gray-400">{selected[1].dosage_form || 'N/A'}</td>
                     </tr>
                     <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4 font-semibold text-foreground">Effektivlik Dərəcəsi</td>
+                      <td className="py-3 px-4 font-semibold text-foreground">{cp.efficacyRate}</td>
                       <td className="py-3 px-4 text-gray-400">{selected[0].efficacy_rate ? `${selected[0].efficacy_rate}%` : 'N/A'}</td>
                       <td className="py-3 px-4 text-gray-400">{selected[1].efficacy_rate ? `${selected[1].efficacy_rate}%` : 'N/A'}</td>
                     </tr>
                     <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4 font-semibold text-foreground">Qiymət (USD)</td>
+                      <td className="py-3 px-4 font-semibold text-foreground">{cp.price}</td>
                       <td className="py-3 px-4 text-gray-400">${selected[0].price?.toFixed(2) || 'N/A'}</td>
                       <td className="py-3 px-4 text-gray-400">${selected[1].price?.toFixed(2) || 'N/A'}</td>
                     </tr>
                     <tr className="hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4 font-semibold text-foreground">Növ Əhatəsi</td>
-                      <td className="py-3 px-4 text-gray-400">{selected[0].species?.length || 0} növ</td>
-                      <td className="py-3 px-4 text-gray-400">{selected[1].species?.length || 0} növ</td>
+                      <td className="py-3 px-4 font-semibold text-foreground">{cp.speciesCoverageLabel}</td>
+                      <td className="py-3 px-4 text-gray-400">{selected[0].species?.length || 0} {cp.species}</td>
+                      <td className="py-3 px-4 text-gray-400">{selected[1].species?.length || 0} {cp.species}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -276,10 +279,8 @@ export default function VaccineCompare() {
               className="flex flex-col items-center justify-center py-20 rounded-2xl bg-card/50 border border-primary/10"
             >
               <span className="text-6xl mb-4">🔄</span>
-              <h3 className="font-orbitron text-xl font-bold text-foreground mb-2">Müqayisə Üçün İki Peyvənd Seçin</h3>
-              <p className="text-muted-foreground text-center max-w-sm">
-                Doza, effektivlik və növ əhatəsinin ətraflı müqayisəsini görmək üçün yuxarıdakı menyulardan iki peyvənd seçin.
-              </p>
+              <h3 className="font-orbitron text-xl font-bold text-foreground mb-2">{cp.selectTwo}</h3>
+              <p className="text-muted-foreground text-center max-w-sm">{cp.selectTwoDesc}</p>
             </motion.div>
           )}
         </AnimatePresence>

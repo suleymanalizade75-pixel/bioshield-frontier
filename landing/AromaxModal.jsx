@@ -1,19 +1,56 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Aromax®', 'Liquid'];
-
-const benefits = [
-  'Relieves respiratory problems',
-  'Helps to decrease respiratory reactions after vaccinations',
-  'Gives extra comfort to livestock in cases of heat stress',
-  'Improves oxygen intake and helps to support thermoregulation',
-  'Enhances water and feed intake',
-  'Helps to improve weight gain and feed conversion ratio',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Aromax®', 'Liquid'] : lang === 'AZ' ? ['Aromax®', 'Maye'] : ['Aromax®', 'Жидкая'],
+  features: lang === 'EN'
+    ? 'Aromax® is a rich synergic combination of essential oils from eucalyptus, thyme and peppermint. These oils are known to alleviate respiratory tract disturbances and to have appetizing, bioactive and insect repellent effects. Due to the essential oils inside the product, Aromax® would enhance the immunity and therefore, is a great support in severe vaccine reactions. Added L-Menthol has anti-pruritic, decongestant and cooling properties.'
+    : lang === 'AZ'
+    ? 'Aromax® evkalipt, kəklikotu və nanədən alınan efir yağlarının zəngin sinergik birləşməsidir. Bu yağların tənəffüs yolu pozuntularını azaltdığı, iştah açıcı, bioaktiv və həşərat uzaqlaşdırıcı təsirlərə malik olduğu bilinir. Məhsulun tərkibindəki efir yağları sayəsində Aromax® immuniteti gücləndirir və bu səbəbdən ağır peyvənd reaksiyalarında böyük dəstək rolunu oynayır. Əlavə edilmiş L-Mentol antiprüritik, ağızaçan və soyuducuedici xüsusiyyətlərə malikdir.'
+    : 'Aromax® — это богатая синергетическая комбинация эфирных масел эвкалипта, тимьяна и перечной мяты. Эти масла известны своим способностью облегчать расстройства дыхательных путей, а также аппетитным, биоактивным и инсектицидным действием. Благодаря эфирным маслам в составе продукта Aromax® укрепляет иммунитет и поэтому является отличной поддержкой при тяжёлых вакцинальных реакциях. Добавленный L-ментол обладает противозудными, противоотёчными и охлаждающими свойствами.',
+  tagline: lang === 'EN'
+    ? 'Respiratory System Support'
+    : lang === 'AZ'
+    ? 'Tənəffüs Sisteminə Dəstək'
+    : 'Поддержка дыхательной системы',
+  taglineSubtext: lang === 'EN'
+    ? 'A puff of fresh and healthy air'
+    : lang === 'AZ'
+    ? 'Təzə və sağlam havanın nəfəsi'
+    : 'Глоток свежего и здорового воздуха',
+  benefits: lang === 'EN' ? [
+    'Relieves respiratory problems',
+    'Helps to decrease respiratory reactions after vaccinations',
+    'Gives extra comfort to livestock in cases of heat stress',
+    'Improves oxygen intake and helps to support thermoregulation',
+    'Enhances water and feed intake',
+    'Helps to improve weight gain and feed conversion ratio',
+  ] : lang === 'AZ' ? [
+    'Tənəffüs problemlərini azaldır',
+    'Peyvəndlərdən sonra tənəffüs reaksiyalarını azaltmağa kömək edir',
+    'İstilik stresi zamanı heyvanlara əlavə rahatlıq verir',
+    'Oksigen qəbulunu artırır və termorequlyasiyaya dəstəklənir',
+    'Su və yem qəbulunu artırır',
+    'Çəki artımını və yem çevrilmə nisbətini yaxşılaşdırmağa kömək edir',
+  ] : [
+    'Устраняет проблемы с дыханием',
+    'Помогает снизить реакции дыхательных путей после вакцинации',
+    'Обеспечивает дополнительный комфорт поголовью при тепловом стрессе',
+    'Улучшает потребление кислорода и поддерживает терморегуляцию',
+    'Повышает потребление воды и корма',
+    'Помогает улучшить прирост живой массы и конверсию корма',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml, and 1 l bottle, 5 l and 25 l canister' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şişə, 5 l və 25 l kanister' : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function AromaxModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -70,7 +107,7 @@ export default function AromaxModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -101,13 +138,13 @@ export default function AromaxModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(56,189,248,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Aromax® is a rich synergic combination of essential oils from eucalyptus, thyme and peppermint. These oils are known to alleviate respiratory tract disturbances and to have appetizing, bioactive and insect repellent effects. Due to the essential oils inside the product, Aromax® would enhance the immunity and therefore, is a great support in severe vaccine reactions. Added L-Menthol has anti-pruritic, decongestant and cooling properties.
+                    {data.features}
                   </p>
                   <div className="font-inter text-xs leading-relaxed mt-3" style={{ color: 'rgba(56,189,248,0.8)' }}>
-                    <strong>Respiratory System Support</strong><br />A puff of fresh and healthy air
+                    <strong>{data.tagline}</strong><br />{data.taglineSubtext}
                   </div>
                 </div>
               </div>
@@ -121,10 +158,10 @@ export default function AromaxModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(56,189,248,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {benefits.map(b => (
+                  {data.benefits.map(b => (
                     <div key={b} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#38bdf8' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -137,9 +174,9 @@ export default function AromaxModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(56,189,248,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(56,189,248,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(56,189,248,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml, and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

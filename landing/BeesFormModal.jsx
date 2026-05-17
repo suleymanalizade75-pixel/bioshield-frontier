@@ -2,29 +2,59 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, Pill } from 'lucide-react';
 import VitalBeeModal from './VitalBeeModal';
+import { useLang } from '@/lib/i18n';
 
-const FORM_CATEGORIES = [
+const getFormCategories = (lang) => [
   {
     key: 'reproduction',
-    label: 'Bee Productive',
+    label: lang === 'EN' ? 'Bee Productive' : lang === 'AZ' ? 'Arı Məhsuldarlığı' : 'Продуктивность Пчёл',
     color: '#C89010',
     glow: 'rgba(200,144,16,0.5)',
-    desc: 'Vitamin/Mineral/Amino Acids for bee productivity and performance.',
+    desc: lang === 'EN'
+      ? 'Vitamin/Mineral/Amino Acids for bee productivity and performance.'
+      : lang === 'AZ'
+      ? 'Arı məhsuldarlığı və performansı üçün Vitamin/Mineral/Amin Turşuları.'
+      : 'Витамин/Минерал/Аминокислоты для продуктивности и производительности пчёл.',
     products: [
-      { name: 'Vital Bee', modal: 'vital-bee', desc: 'Ready-to-use vitamin, protein and energy solution for productive bees.' },
+      {
+        name: 'Vital Bee',
+        modal: 'vital-bee',
+        desc: lang === 'EN'
+          ? 'Ready-to-use vitamin, protein and energy solution for productive bees.'
+          : lang === 'AZ'
+          ? 'Məhsuldar arılar üçün hazır vitamin, zülal və enerji məhlulu.'
+          : 'Готовый к применению витаминный, белковый и энергетический раствор для продуктивных пчёл.',
+      },
     ],
   },
   {
     key: 'protection',
-    label: 'Colony Protection',
+    label: lang === 'EN' ? 'Colony Protection' : lang === 'AZ' ? 'Koloniya Qorunması' : 'Защита Колонии',
     color: '#C89010',
     glow: 'rgba(200,144,16,0.5)',
-    desc: 'Propolis standardized extract for antifungal colony protection.',
+    desc: lang === 'EN'
+      ? 'Propolis standardized extract for antifungal colony protection.'
+      : lang === 'AZ'
+      ? 'Antifungal koloniya qorunması üçün standartlaşdırılmış propolis ekstraktı.'
+      : 'Стандартизированный экстракт прополиса для противогрибковой защиты колонии.',
     products: [
-      { name: 'PropoClear', desc: 'Advanced propolis formulation for comprehensive colony health.' },
+      {
+        name: 'PropoClear',
+        desc: lang === 'EN'
+          ? 'Advanced propolis formulation for comprehensive colony health.'
+          : lang === 'AZ'
+          ? 'Hərtərəfli koloniya sağlamlığı üçün qabaqcıl propolis formulası.'
+          : 'Передовая формула прополиса для комплексного здоровья колонии.',
+      },
     ],
   },
 ];
+
+const getLabels = (lang) => ({
+  headerTitle: lang === 'EN' ? 'BEES · FARM' : lang === 'AZ' ? 'ARILAR · FERMA' : 'ПЧЁЛЫ · ФЕРМА',
+  headerSub: lang === 'EN' ? 'FORMULATION OPTIONS FOR HONEY & QUEEN BEES' : lang === 'AZ' ? 'BAL & ANA ARI ÜÇÜN FORMUL SEÇİMLƏRİ' : 'ВАРИАНТЫ ФОРМУЛИРОВОК ДЛЯ МЁДОВЫХ & МАТОЧНЫХ ПЧЁЛ',
+  hint: lang === 'EN' ? '↑ SELECT A CATEGORY TO VIEW PRODUCTS' : lang === 'AZ' ? '↑ MƏHSULLARI GÖRMƏK ÜÇÜN KATEQORİYA SEÇİN' : '↑ ВЫБЕРИТЕ КАТЕГОРИЮ ДЛЯ ПРОСМОТРА ПРОДУКТОВ',
+});
 
 function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
   return (
@@ -65,6 +95,10 @@ function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
 }
 
 export default function BeesFormModal({ open, onClose }) {
+  const { lang } = useLang();
+  const FORM_CATEGORIES = getFormCategories(lang);
+  const labels = getLabels(lang);
+
   const [hovered, setHovered] = useState(null);
   const [locked, setLocked] = useState(null);
   const [vitalBeeOpen, setVitalBeeOpen] = useState(false);
@@ -130,10 +164,10 @@ export default function BeesFormModal({ open, onClose }) {
                 </div>
                 <div>
                   <div className="font-orbitron text-sm font-bold text-white tracking-[3px]">
-                    BEES · FARM
+                    {labels.headerTitle}
                   </div>
                   <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: 'rgba(200,144,16,0.55)' }}>
-                    FORMULATION OPTIONS FOR HONEY & QUEEN BEES
+                    {labels.headerSub}
                   </div>
                 </div>
               </div>
@@ -176,7 +210,7 @@ export default function BeesFormModal({ open, onClose }) {
                     className="text-center py-3"
                   >
                     <span className="font-mono text-[10px] tracking-[4px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                      ↑ SELECT A CATEGORY TO VIEW PRODUCTS
+                      {labels.hint}
                     </span>
                   </motion.div>
                 ) : (

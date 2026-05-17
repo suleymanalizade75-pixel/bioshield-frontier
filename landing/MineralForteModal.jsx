@@ -1,18 +1,48 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Mineral Forte', 'Liquid', 'Vitamin/Mineral/Amino Acids'];
-
-const benefits = [
-  'Protect against stress conditions',
-  'Avoid fertility problems',
-  'Prevent bone and leg problems',
-  'Maintain egg quality and yield',
-  'Support in high production periods',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Mineral Forte', 'Liquid', 'Vitamin/Mineral/Amino Acids'] : lang === 'AZ' ? ['Mineral Forte', 'Maye', 'Vitamin/Mineral/Amin Turşuları'] : ['Mineral Forte', 'Жидкая', 'Витамины/Минералы/Аминокислоты'],
+  tagline: lang === 'EN'
+    ? 'Supply what is essential'
+    : lang === 'AZ'
+    ? 'Zəruri olanı təmin edin'
+    : 'Обеспечьте необходимое',
+  features: lang === 'EN'
+    ? 'Minerals are essential for healthy livestock; their deficiencies may result in retarded growth, poor performance, lack of energy, skeletal disorders, altered fertility, and metabolic disturbances. The demand for minerals and other nutritional factors increases in periods of fast growth, high production periods such as the peak of laying, and also in later ages.'
+    : lang === 'AZ'
+    ? 'Minerallar sağlam heyvandarlıq üçün vacibdir; onların çatışmazlığı böyümənin ləngiməsinə, zəif performansa, enerji çatışmazlığına, iskelet pozuntularına, dəyişilmiş fertilliyə və metabolik pozğunluqlara səbəb ola bilər. Mineral və digər qida faktorlarına tələbat sürətli böyümə dövrlərində, yumurta qoyumunun pik dövrü kimi yüksək məhsuldarlıq dövrlərində və həmçinin daha sonrakı yaşlarda artır.'
+    : 'Минералы необходимы для здорового поголовья; их дефицит может привести к задержке роста, плохой продуктивности, нехватке энергии, расстройствам скелета, нарушению репродуктивной функции и метаболическим расстройствам. Потребность в минералах и других питательных факторах возрастает в периоды быстрого роста, высокой продуктивности — например, в пик яйцекладки — а также в более позднем возрасте.',
+  benefits: lang === 'EN' ? [
+    'Protect against stress conditions',
+    'Avoid fertility problems',
+    'Prevent bone and leg problems',
+    'Maintain egg quality and yield',
+    'Support in high production periods',
+  ] : lang === 'AZ' ? [
+    'Stres şəraitinə qarşı qoruyur',
+    'Fertillik problemlərinin qarşısını alır',
+    'Sümük və ayaq problemlərinin qarşısını alır',
+    'Yumurta keyfiyyəti və məhsuldarlığını qoruyur',
+    'Yüksək məhsuldarlıq dövrlərində dəstək',
+  ] : [
+    'Защищает от стрессовых условий',
+    'Предотвращает проблемы с репродуктивной функцией',
+    'Предотвращает проблемы с костями и ногами',
+    'Поддерживает качество и выход яиц',
+    'Поддержка в периоды высокой продуктивности',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şişə, 5 l və 25 l kanister' : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function MineralForteModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -69,7 +99,7 @@ export default function MineralForteModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -86,7 +116,7 @@ export default function MineralForteModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#38bdf8' }}>
-                Supply what is essential
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -105,10 +135,10 @@ export default function MineralForteModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(56,189,248,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Minerals are essential for healthy livestock; their deficiencies may result in retarded growth, poor performance, lack of energy, skeletal disorders, altered fertility, and metabolic disturbances. The demand for minerals and other nutritional factors increases in periods of fast growth, high production periods such as the peak of laying, and also in later ages.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -122,10 +152,10 @@ export default function MineralForteModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(56,189,248,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#38bdf8' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -138,9 +168,9 @@ export default function MineralForteModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(56,189,248,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(56,189,248,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(56,189,248,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

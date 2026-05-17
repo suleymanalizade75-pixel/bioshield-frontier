@@ -1,18 +1,43 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Pro-Start', 'Liquid', 'Early Care'];
-
-const benefits = [
-  'Maximum intake of nutritional factors',
-  'Optimized weight gain',
-  'Proper development of the digestive tract',
-  'Better protection via passive immunity',
-  'Increased number of live piglets at weaning',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Pro-Start', 'Liquid', 'Early Care'] : lang === 'AZ' ? ['Pro-Start', 'Maye', 'Erkən Qulluq'] : ['Pro-Start', 'Жидкая', 'Ранний Уход'],
+  features: lang === 'EN'
+    ? 'Pro-Start is a combination of high-dosed probiotic bacteria, vitamins, immunoglobulin-rich egg powder and plant based medium-chain fatty acids. They act together ensuring the piglets recover quickly from the stress of birth, moving faster towards the mother to start sucking colostrum and properly developing a balanced gut microbiome and intestinal mucosa.'
+    : lang === 'AZ'
+    ? 'Pro-Start yüksək dozalı probiotik bakteriyalar, vitaminlər, immunoqlobulinlə zəngin yumurta tozu və bitki əsaslı orta zəncirli yağ turşularının birləşməsidir. Onlar birlikdə hərəkət edərək donuzların doğuş stresindən sürətlə sağalmasını, südü əmmə üçün anaya daha sürətlə yaxınlaşmasını və balanslaşdırılmış bağırsaq mikrobiyomunu və bağırsaq selikli qişasını düzgün inkişaf etdirməsini təmin edir.'
+    : 'Pro-Start — это комбинация высокодозированных пробиотических бактерий, витаминов, богатого иммуноглобулинами яичного порошка и растительных среднецепочечных жирных кислот. Они действуют совместно, обеспечивая быстрое восстановление поросят от стресса рождения, более быстрое приближение к матери для сосания молозива и правильное формирование сбалансированного кишечного микробиома и слизистой кишечника.',
+  benefits: lang === 'EN' ? [
+    'Maximum intake of nutritional factors',
+    'Optimized weight gain',
+    'Proper development of the digestive tract',
+    'Better protection via passive immunity',
+    'Increased number of live piglets at weaning',
+  ] : lang === 'AZ' ? [
+    'Qida faktorlarının maksimal qəbulu',
+    'Optimallaşdırılmış çəki artımı',
+    'Həzm traktının düzgün inkişafı',
+    'Passiv immunitet vasitəsilə daha yaxşı qorunma',
+    'Süddən kəsmə zamanı diri donuzların sayının artması',
+  ] : [
+    'Максимальное поступление питательных факторов',
+    'Оптимизированный прирост массы тела',
+    'Правильное развитие пищеварительного тракта',
+    'Лучшая защита через пассивный иммунитет',
+    'Увеличение числа живых поросят при отъёме',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml and 500 ml in special pumping application bottles (1 pump per each 6 bottles)' : lang === 'AZ' ? '250 ml və 500 ml xüsusi nasos tətbiqi şişələrində (hər 6 şişəyə 1 nasos)' : '250 мл и 500 мл в специальных флаконах с насосом-дозатором (1 насос на каждые 6 флаконов)',
+});
 
 export default function ProStartModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -69,7 +94,7 @@ export default function ProStartModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -105,10 +130,10 @@ export default function ProStartModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Pro-Start is a combination of high-dosed probiotic bacteria, vitamins, immunoglobulin-rich egg powder and plant based medium-chain fatty acids. They act together ensuring the piglets recover quickly from the stress of birth, moving faster towards the mother to start sucking colostrum and properly developing a balanced gut microbiome and intestinal mucosa.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -122,10 +147,10 @@ export default function ProStartModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#34d399' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -138,9 +163,9 @@ export default function ProStartModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(52,211,153,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml and 500 ml in special pumping application bottles (1 pump per each 6 bottles)
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

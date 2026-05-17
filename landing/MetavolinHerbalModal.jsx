@@ -1,18 +1,62 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Liver Support', 'Metabolic Health', 'Detoxification', 'Liquid'];
+const getModalData = (lang) => ({
+  tags: lang === 'EN'
+    ? ['Liver Support', 'Metabolic Health', 'Detoxification', 'Liquid']
+    : lang === 'AZ'
+    ? ['Qaraciyər Dəstəyi', 'Metabolik Sağlamlıq', 'Detoksifikasiya', 'Maye']
+    : ['Поддержка Печени', 'Метаболическое Здоровье', 'Детоксикация', 'Жидкая'],
 
-const benefits = [
-  'Improving liver metabolism',
-  'Helping liver on fat mobilization',
-  'Quick recovery from hepatic conditions',
-  'Long-term hepatic protection',
-  'Supports enhanced performance',
-];
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+
+  features: lang === 'EN'
+    ? 'Metavolin Herbal® is a balanced formulation designed to support the liver for its perfect function. The combination of hepatic factors together with two botanical extracts offer high anti-oxidant effect and promotion of liver detoxification and helping to prevent fatty liver condition.'
+    : lang === 'AZ'
+    ? 'Metavolin Herbal® qaraciyərin mükəmməl fəaliyyətini dəstəkləmək üçün nəzərdə tutulmuş balanslaşdırılmış bir formulyadır. Hepatik faktorların iki botanik ekstraktla birləşməsi yüksək antioksidan effekt, qaraciyər detoksifikasiyasının dəstəklənməsi və yağlı qaraciyər vəziyyətinin qarşısının alınmasına kömək edir.'
+    : 'Metavolin Herbal® — сбалансированная формула, предназначенная для поддержки печени в её оптимальном функционировании. Сочетание гепатических факторов с двумя растительными экстрактами обеспечивает высокий антиоксидантный эффект, способствует детоксикации печени и помогает предотвратить жировую дистрофию печени.',
+
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+
+  benefits: lang === 'EN'
+    ? [
+        'Improving liver metabolism',
+        'Helping liver on fat mobilization',
+        'Quick recovery from hepatic conditions',
+        'Long-term hepatic protection',
+        'Supports enhanced performance',
+      ]
+    : lang === 'AZ'
+    ? [
+        'Qaraciyər metabolizminin yaxşılaşdırılması',
+        'Yağların mobilizasiyasında qaraciyərə kömək',
+        'Hepatik vəziyyətlərdən sürətli sağalma',
+        'Uzunmüddətli hepatik mühafizə',
+        'Gücləndirilmiş performansı dəstəkləyir',
+      ]
+    : [
+        'Улучшение метаболизма печени',
+        'Помощь печени в мобилизации жиров',
+        'Быстрое восстановление после гепатических состояний',
+        'Долгосрочная защита печени',
+        'Поддержка повышенной продуктивности',
+      ],
+
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+
+  packagingDesc: lang === 'EN'
+    ? '250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister'
+    : lang === 'AZ'
+    ? '250 ml, 500 ml və 1 l şişə, 5 l və 25 l kanister'
+    : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function MetavolinHerbalModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
+
   return (
     <AnimatePresence>
       {open && (
@@ -69,7 +113,7 @@ export default function MetavolinHerbalModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -100,10 +144,10 @@ export default function MetavolinHerbalModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(251,146,60,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Metavolin Herbal® is a balanced formulation designed to support the liver for its perfect function. The combination of hepatic factors together with two botanical extracts offer high anti-oxidant effect and promotion of liver detoxification and helping to prevent fatty liver condition.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -117,10 +161,10 @@ export default function MetavolinHerbalModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(251,146,60,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {benefits.map(b => (
+                  {data.benefits.map(b => (
                     <div key={b} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#fb923c' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -133,9 +177,9 @@ export default function MetavolinHerbalModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(251,146,60,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,146,60,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,146,60,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

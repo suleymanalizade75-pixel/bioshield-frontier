@@ -1,27 +1,70 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, FlaskConical } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
 const COLOR = '#FFD700';
 
-const PRODUCTS = [
-  {
-    key: 'cashmere',
-    name: 'Cashmere Coat',
-    color: COLOR,
-    glow: 'rgba(255,215,0,0.5)',
-    desc: 'Omega-3 & trace minerals for premium fiber quality and coat luster.',
-  },
-  {
-    key: 'reproductive',
-    name: 'Reproductive Performance',
-    color: COLOR,
-    glow: 'rgba(255,215,0,0.5)',
-    desc: 'Vitamin E & selenium for improved conception rate and litter size.',
-  },
-];
+const getModalData = (lang) => ({
+  headerTitle: lang === 'EN' ? 'FARM SOLUTIONS' : lang === 'AZ' ? 'FERMA HƏLLƏRİ' : 'РЕШЕНИЯ ДЛЯ ФЕРМЫ',
+  headerSub: lang === 'EN' ? 'GOAT · CAPRINE' : lang === 'AZ' ? 'KEÇİ · KAPRİN' : 'КОЗА · КАПРИН',
+
+  products: lang === 'EN'
+    ? [
+        {
+          key: 'cashmere',
+          name: 'Cashmere Coat',
+          color: COLOR,
+          glow: 'rgba(255,215,0,0.5)',
+          desc: 'Omega-3 & trace minerals for premium fiber quality and coat luster.',
+        },
+        {
+          key: 'reproductive',
+          name: 'Reproductive Performance',
+          color: COLOR,
+          glow: 'rgba(255,215,0,0.5)',
+          desc: 'Vitamin E & selenium for improved conception rate and litter size.',
+        },
+      ]
+    : lang === 'AZ'
+    ? [
+        {
+          key: 'cashmere',
+          name: 'Kaşmir Tüyü',
+          color: COLOR,
+          glow: 'rgba(255,215,0,0.5)',
+          desc: 'Premium lif keyfiyyəti və tüy parlaqlığı üçün Omega-3 və iz minerallar.',
+        },
+        {
+          key: 'reproductive',
+          name: 'Reproduktiv Performans',
+          color: COLOR,
+          glow: 'rgba(255,215,0,0.5)',
+          desc: 'Yaxşılaşdırılmış mayalanma nisbəti və döl sayı üçün E vitamini və selenium.',
+        },
+      ]
+    : [
+        {
+          key: 'cashmere',
+          name: 'Качество Шерсти',
+          color: COLOR,
+          glow: 'rgba(255,215,0,0.5)',
+          desc: 'Омега-3 и микроэлементы для высококачественного волокна и блеска шерсти.',
+        },
+        {
+          key: 'reproductive',
+          name: 'Репродуктивная Продуктивность',
+          color: COLOR,
+          glow: 'rgba(255,215,0,0.5)',
+          desc: 'Витамин E и селен для улучшения показателя оплодотворяемости и размера помёта.',
+        },
+      ],
+});
 
 export default function GoatFormModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
+
   return (
     <AnimatePresence>
       {open && (
@@ -53,8 +96,8 @@ export default function GoatFormModal({ open, onClose }) {
                   <FlaskConical className="w-4 h-4" style={{ color: COLOR, filter: `drop-shadow(0 0 5px ${COLOR})` }} />
                 </div>
                 <div>
-                  <div className="font-orbitron text-sm font-bold text-white tracking-[2px]">FARM SOLUTIONS</div>
-                  <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: `${COLOR}88` }}>GOAT · CAPRINE</div>
+                  <div className="font-orbitron text-sm font-bold text-white tracking-[2px]">{data.headerTitle}</div>
+                  <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: `${COLOR}88` }}>{data.headerSub}</div>
                 </div>
               </div>
               <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
@@ -67,7 +110,7 @@ export default function GoatFormModal({ open, onClose }) {
 
             {/* Products */}
             <div className="p-6 space-y-3">
-              {PRODUCTS.map((product, i) => (
+              {data.products.map((product, i) => (
                 <motion.div
                   key={product.key}
                   initial={{ opacity: 0, x: -20 }}

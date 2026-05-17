@@ -1,17 +1,40 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Kidney Support', 'A Good Plumber', 'Quick solution', 'Liquid'];
-
-const benefits = [
-  'Quick and specific problem solver',
-  'Replenishes energy and electrolytes',
-  'Support of kidney activities',
-  'Cost-efficient solution',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Kidney Support', 'A Good Plumber', 'Quick solution', 'Liquid'] : lang === 'AZ' ? ['Böyrək Dəstəyi', 'Sürətli Həll', 'Maye'] : ['Поддержка Почек', 'Быстрое Решение', 'Жидкая'],
+  features: lang === 'EN'
+    ? 'Renal Cleaner is especially designed to help animals cope with negative consequences of renal disorders. Use Renal Cleaner as a preventive solution in case of high protein diets, at first symptoms of renal problems in livestock such as high risk of mycotoxin contamination of feedstuffs or after repetitive use of antibiotics and other kidney-damaging medications. Renal Cleaner is a nutraceutical support that can be used in cases of conditions related with disease causing agents that may affect kidney functions.'
+    : lang === 'AZ'
+    ? 'Renal Cleaner xüsusilə heyvanların böyrək pozuntularının mənfi nəticələri ilə mübarizə aparmasına kömək etmək üçün hazırlanmışdır. Renal Cleaner-i yüksək zülal pəhrizlərində, yem maddələrinin mikotoksinlə çirklənmə riski yüksək olduqda və ya antibiotiklərin və digər böyrəkzərərli dərmanların təkrar istifadəsindən sonra böyrək problemlərinin ilk əlamətlərində profilaktik həll kimi istifadə edin. Renal Cleaner böyrək funksiyalarına təsir edə bilən xəstəlik törədicilərindən qaynaqlanan vəziyyətlərdə istifadə edilə bilən nutrasevtik dəstəkdir.'
+    : 'Renal Cleaner разработан специально для помощи животным в преодолении негативных последствий почечных расстройств. Применяйте Renal Cleaner в качестве профилактического средства при высокобелковых диетах, при первых симптомах почечных проблем у животных, таких как высокий риск загрязнения кормов микотоксинами, или после повторного применения антибиотиков и других нефротоксичных препаратов. Renal Cleaner — это нутрицевтическая поддержка, которую можно использовать при состояниях, связанных с возбудителями болезней, способными нарушить функции почек.',
+  benefits: lang === 'EN' ? [
+    'Quick and specific problem solver',
+    'Replenishes energy and electrolytes',
+    'Support of kidney activities',
+    'Cost-efficient solution',
+  ] : lang === 'AZ' ? [
+    'Sürətli və spesifik problem həlledici',
+    'Enerji və elektrolitləri bərpa edir',
+    'Böyrək fəaliyyətinin dəstəklənməsi',
+    'Xərclərə uyğun həll',
+  ] : [
+    'Быстрое и целенаправленное решение проблем',
+    'Восполняет энергию и электролиты',
+    'Поддержка функций почек',
+    'Экономически эффективное решение',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şişə, 5 l və 25 l kanister' : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function RenalCleanerModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -68,7 +91,7 @@ export default function RenalCleanerModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -99,10 +122,10 @@ export default function RenalCleanerModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(96,165,250,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Renal Cleaner is especially designed to help animals cope with negative consequences of renal disorders. Use Renal Cleaner as a preventive solution in case of high protein diets, at first symptoms of renal problems in livestock such as high risk of mycotoxin contamination of feedstuffs or after repetitive use of antibiotics and other kidney-damaging medications. Renal Cleaner is a nutraceutical support that can be used in cases of conditions related with disease causing agents that may affect kidney functions.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -116,10 +139,10 @@ export default function RenalCleanerModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(96,165,250,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {benefits.map(b => (
+                  {data.benefits.map(b => (
                     <div key={b} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#60a5fa' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -132,9 +155,9 @@ export default function RenalCleanerModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(96,165,250,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(96,165,250,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(96,165,250,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

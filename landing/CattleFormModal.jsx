@@ -5,61 +5,98 @@ import SmoothProModal from './SmoothProModal';
 import GlobioticModal from './GlobioticModal';
 import TurboFluidModal from './TurboFluidModal';
 import VitaminAD3EModal from './VitaminAD3EModal';
+import { useLang } from '@/lib/i18n';
 
-const FORM_CATEGORIES = [
+const getFormCategories = (lang) => [
   {
     key: 'muscle',
-    label: 'Muscle Development',
+    label: lang === 'EN' ? 'Muscle Development' : lang === 'AZ' ? 'Əzələ İnkişafı' : 'Развитие Мышц',
     color: '#6B9E30',
     glow: 'rgba(107,158,48,0.5)',
-    desc: 'Creatine & branched-chain AAs for superior beef muscle deposition.',
+    desc: lang === 'EN'
+      ? 'Creatine & branched-chain AAs for superior beef muscle deposition.'
+      : lang === 'AZ'
+      ? 'Üstün mal əti əzələ çöküşü üçün kreatin & budaqlanmış zəncirli AK-lar.'
+      : 'Креатин & аминокислоты с разветвлённой цепью для превосходного отложения мышц говядины.',
     products: [
-      { name: 'MuscleMass-B', desc: 'Premium formula for enhanced muscle protein synthesis and deposition.' },
+      {
+        name: 'MuscleMass-B',
+        desc: lang === 'EN' ? 'Premium formula for enhanced muscle protein synthesis and deposition.' : lang === 'AZ' ? 'Gücləndirilmiş əzələ zülal sintezi və çöküşü üçün premium formul.' : 'Премиум формула для усиленного синтеза и отложения мышечного белка.',
+      },
     ],
   },
   {
     key: 'coat',
-    label: 'Coat & Hide Quality',
+    label: lang === 'EN' ? 'Coat & Hide Quality' : lang === 'AZ' ? 'Tük & Dəri Keyfiyyəti' : 'Качество Шерсти & Шкуры',
     color: '#6B9E30',
     glow: 'rgba(107,158,48,0.5)',
-    desc: 'Omega-3 & selenium complex for glossy hide and skin health.',
+    desc: lang === 'EN'
+      ? 'Omega-3 & selenium complex for glossy hide and skin health.'
+      : lang === 'AZ'
+      ? 'Parlaq dəri və dəri sağlamlığı üçün Omega-3 & selen kompleksi.'
+      : 'Комплекс Омега-3 & селена для блестящей шкуры и здоровья кожи.',
     products: [
-      { name: 'CoatLuster', desc: 'Advanced formulation for superior hide appearance and skin integrity.' },
+      {
+        name: 'CoatLuster',
+        desc: lang === 'EN' ? 'Advanced formulation for superior hide appearance and skin integrity.' : lang === 'AZ' ? 'Üstün dəri görünüşü və bütövlüyü üçün qabaqcıl formul.' : 'Передовая формула для превосходного внешнего вида шкуры и целостности кожи.',
+      },
     ],
   },
   {
     key: 'carcass-quality',
-    label: 'Carcass Quality',
+    label: lang === 'EN' ? 'Carcass Quality' : lang === 'AZ' ? 'Karkas Keyfiyyəti' : 'Качество Туши',
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.5)',
-    desc: 'Targeted compounds for lean meat percentage improvement and superior carcass grading.',
+    desc: lang === 'EN'
+      ? 'Targeted compounds for lean meat percentage improvement and superior carcass grading.'
+      : lang === 'AZ'
+      ? 'Yağsız ət faizinin yaxşılaşdırılması və üstün karkas dərəcələndirilməsi üçün hədəflənmiş birləşmələr.'
+      : 'Целенаправленные соединения для улучшения процента постного мяса и превосходной классификации туши.',
     products: [{ name: 'Smooth Pro', modal: 'smooth-pro' }],
   },
   {
     key: 'early-care',
-    label: 'Early Care',
+    label: lang === 'EN' ? 'Early Care' : lang === 'AZ' ? 'Erkən Qayğı' : 'Ранний Уход',
     color: '#34d399',
     glow: 'rgba(52,211,153,0.5)',
-    desc: 'Colostrum support & neonatal immunity for optimal calf development and survival.',
+    desc: lang === 'EN'
+      ? 'Colostrum support & neonatal immunity for optimal calf development and survival.'
+      : lang === 'AZ'
+      ? 'Optimal buzov inkişafı və sağ qalması üçün kolostrum dəstəyi & yenidoğan immuniteti.'
+      : 'Поддержка молозива & неонатальный иммунитет для оптимального развития и выживания телят.',
     products: [{ name: 'Globiotic', modal: 'globiotic' }],
   },
   {
     key: 'heat-stress',
-    label: 'Heat Stress',
+    label: lang === 'EN' ? 'Heat Stress' : lang === 'AZ' ? 'İstilik Stresi' : 'Тепловой Стресс',
     color: '#fbbf24',
     glow: 'rgba(251,191,36,0.5)',
-    desc: 'Electrolyte & antioxidant support for thermoregulation during high-temperature periods.',
+    desc: lang === 'EN'
+      ? 'Electrolyte & antioxidant support for thermoregulation during high-temperature periods.'
+      : lang === 'AZ'
+      ? 'Yüksək temperatur dövrlərində termorequlyasiya üçün elektrolit & antioksidant dəstəyi.'
+      : 'Электролитная & антиоксидантная поддержка для терморегуляции в периоды высоких температур.',
     products: [{ name: 'Turbo Fluid', modal: 'turbo-fluid' }],
   },
   {
     key: 'vitamin-mineral-amino',
-    label: 'Vitamin/Mineral/Amino Acids',
+    label: lang === 'EN' ? 'Vitamin/Mineral/Amino Acids' : lang === 'AZ' ? 'Vitamin/Mineral/Amin Turşuları' : 'Витамин/Минерал/Аминокислоты',
     color: '#38bdf8',
     glow: 'rgba(56,189,248,0.5)',
-    desc: 'Balanced micronutrient & amino acid profile for metabolic optimization and peak performance.',
+    desc: lang === 'EN'
+      ? 'Balanced micronutrient & amino acid profile for metabolic optimization and peak performance.'
+      : lang === 'AZ'
+      ? 'Metabolik optimallaşdırma və pik performans üçün balanslaşdırılmış mikroqida & amin turşusu profili.'
+      : 'Сбалансированный профиль микронутриентов & аминокислот для метаболической оптимизации и пиковой производительности.',
     products: [{ name: 'Turbo Fluid', modal: 'turbo-fluid' }, { name: 'Vitamin AD3E', modal: 'vitamin-ad3e' }],
   },
 ];
+
+const getLabels = (lang) => ({
+  headerTitle: lang === 'EN' ? 'CATTLE · FARM' : lang === 'AZ' ? 'MAL-QARA · FERMA' : 'КРС · ФЕРМА',
+  headerSub: lang === 'EN' ? '6 FARM CATEGORIES' : lang === 'AZ' ? '6 FERMA KATEQORİYASI' : '6 КАТЕГОРИЙ ФЕРМЫ',
+  hint: lang === 'EN' ? '↑ SELECT A CATEGORY TO VIEW PRODUCTS' : lang === 'AZ' ? '↑ MƏHSULLARI GÖRMƏK ÜÇÜN KATEQORİYA SEÇİN' : '↑ ВЫБЕРИТЕ КАТЕГОРИЮ ДЛЯ ПРОСМОТРА ПРОДУКТОВ',
+});
 
 function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
   return (
@@ -100,6 +137,10 @@ function CategoryCard({ cat, isHovered, onHover, onLeave, isLocked, onLock }) {
 }
 
 export default function CattleFormModal({ open, onClose }) {
+  const { lang } = useLang();
+  const FORM_CATEGORIES = getFormCategories(lang);
+  const labels = getLabels(lang);
+
   const [hovered, setHovered] = useState(null);
   const [locked, setLocked] = useState(null);
   const [smoothProOpen, setSmoothProOpen] = useState(false);
@@ -174,10 +215,10 @@ export default function CattleFormModal({ open, onClose }) {
                 </div>
                 <div>
                   <div className="font-orbitron text-sm font-bold text-white tracking-[3px]">
-                    CATTLE · FARM
+                    {labels.headerTitle}
                   </div>
                   <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: 'rgba(107,158,48,0.55)' }}>
-                    6 FARM CATEGORIES
+                    {labels.headerSub}
                   </div>
                 </div>
               </div>
@@ -220,7 +261,7 @@ export default function CattleFormModal({ open, onClose }) {
                     className="text-center py-3"
                   >
                     <span className="font-mono text-[10px] tracking-[4px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                      ↑ SELECT A CATEGORY TO VIEW PRODUCTS
+                      {labels.hint}
                     </span>
                   </motion.div>
                 ) : (

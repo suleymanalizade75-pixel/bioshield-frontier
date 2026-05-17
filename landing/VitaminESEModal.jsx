@@ -1,15 +1,35 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Vitamin E+Se', 'Liquid', 'Vitamin/Mineral/Amino Acids'];
-
-const benefits = [
-  'In broilers, it helps to prevent ascites, death syndrome, and encephalomalacia',
-  'In layers and breeders, it contributes to fertility, egg quality, and laying performance',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Vitamin E+Se', 'Liquid', 'Vitamin/Mineral/Amino Acids'] : lang === 'AZ' ? ['Vitamin E+Se', 'Maye', 'Vitamin/Mineral/Amino Turşular'] : ['Витамин E+Se', 'Жидкая', 'Витамин/Минерал/Аминокислоты'],
+  tagline: lang === 'EN' ? 'Reach outstanding production levels' : lang === 'AZ' ? 'Yüksək istehsal göstəricilərinə nail olun' : 'Достигните выдающихся показателей производства',
+  features: lang === 'EN'
+    ? 'Vitamin E+Se contains fat-soluble vitamin E, essential to animals because of its role in reducing free radicals, its action as an anti-toxic agent, and its effect on the formation and protection of cell membranes, positively influencing the circulatory system and blood vessels. Selenium is important for thyroid metabolism, hence for animal growth, and essential for the proper functioning of anti-oxidative body mechanisms.'
+    : lang === 'AZ'
+    ? 'Vitamin E+Se yağda həll olan E vitamini ehtiva edir. Bu vitamin, sərbəst radikalları azaltmadakı rolu, antitoksik agent kimi təsiri və hüceyrə membranlarının formalaşmasına və qorunmasına müsbət təsiri sayəsində heyvanlar üçün vacibdir; dövriyyə sisteminə və qan damarlarına da müsbət təsir göstərir. Selenium qalxanabənzər vəz metabolizmi üçün, beləliklə heyvanların böyüməsi üçün əhəmiyyətlidir və orqanizmin antioksidant mexanizmlərinin düzgün işləməsi üçün vacibdir.'
+    : 'Vitamin E+Se содержит жирорастворимый витамин E, необходимый животным благодаря его роли в нейтрализации свободных радикалов, антитоксическому действию и влиянию на формирование и защиту клеточных мембран, а также положительному воздействию на систему кровообращения и сосуды. Селен важен для метаболизма щитовидной железы, а следовательно, для роста животных, и незаменим для правильного функционирования антиоксидантных механизмов организма.',
+  benefits: lang === 'EN' ? [
+    'In broilers, it helps to prevent ascites, death syndrome, and encephalomalacia',
+    'In layers and breeders, it contributes to fertility, egg quality, and laying performance',
+  ] : lang === 'AZ' ? [
+    'Broylerlər üçün assit, ölüm sindromu və ensefalomalyasiyanın qarşısını almağa kömək edir',
+    'Yumurtlayan quşlar və damızlıqlarda fertilliyə, yumurta keyfiyyətinə və yumurtalama performansına töhfə verir',
+  ] : [
+    'У бройлеров помогает предотвратить асцит, синдром внезапной смерти и энцефаломаляцию',
+    'У несушек и племенных птиц способствует фертильности, качеству яиц и яйценоскости',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml, and 1 l bottles, 5 l, and 25 l canisters' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şüşələr, 5 l və 25 l kanisterlər' : '250 мл, 500 мл и 1 л бутылки, 5 л и 25 л канистры',
+});
 
 export default function VitaminESEModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -66,7 +86,7 @@ export default function VitaminESEModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -83,7 +103,7 @@ export default function VitaminESEModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#38bdf8' }}>
-                Reach outstanding production levels
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -102,10 +122,10 @@ export default function VitaminESEModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(56,189,248,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Vitamin E+Se contains fat-soluble vitamin E, essential to animals because of its role in reducing free radicals, its action as an anti-toxic agent, and its effect on the formation and protection of cell membranes, positively influencing the circulatory system and blood vessels. Selenium is important for thyroid metabolism, hence for animal growth, and essential for the proper functioning of anti-oxidative body mechanisms.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -119,10 +139,10 @@ export default function VitaminESEModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(56,189,248,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#38bdf8' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -135,9 +155,9 @@ export default function VitaminESEModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(56,189,248,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(56,189,248,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(56,189,248,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml, and 1 l bottles, 5 l, and 25 l canisters
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

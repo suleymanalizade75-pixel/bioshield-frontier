@@ -1,17 +1,42 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['TanniFit Plus Dry', 'Water Soluble Powder', 'Gut Health'];
-
-const benefits = [
-  'Quick regulation of intestinal disturbances',
-  'Anti-inflammatory and antimicrobial effects',
-  'A protected digestive tract',
-  'Reduction of pathogen pressure',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['TanniFit Plus Dry', 'Water Soluble Powder', 'Gut Health'] : lang === 'AZ' ? ['TanniFit Plus Dry', 'Suda Həll Olunan Toz', 'Bağırsaq Sağlamlığı'] : ['TanniFit Plus Dry', 'Водорастворимый Порошок', 'Здоровье Кишечника'],
+  features: lang === 'EN'
+    ? 'TanniFit Plus Dry is a complementary feed with botanical ingredients in order to stabilize water and electrolyte balance to support a physiological digestion in the early life of calves and lambs. The tannin-rich formula has astringent and anti-inflammatory effects on the gut mucosa. Essential oil of Oregano is well-known for its anti-inflammatory, antimicrobial and anti-fungal effects as well as its potential to reduce oxidative stress. The combination of these botanical ingredients might stimulate the appetite in challenging times.'
+    : lang === 'AZ'
+    ? 'TanniFit Plus Dry, buzovlar və quzuların erkən həyatında fizyoloji həzmi dəstəkləmək üçün su-elektrolit balansını sabitləşdirən botanik ingrediyentli əlavə yemlərdir. Tannin baxımından zəngin formula bağırsaq selikli qişasına büzücü və iltihab əleyhinə təsir göstərir. Kəklikotu efir yağı iltihab əleyhinə, antimikrob və antifungal təsirləri ilə oksidativ stresi azaltmaq potensialına görə məşhurdur. Bu botanik ingrediyentlərin birləşməsi çətin dövrlərdə iştahanı stimullaşdıra bilər.'
+    : 'TanniFit Plus Dry — это дополнительный корм с растительными ингредиентами для стабилизации водно-электролитного баланса и поддержки физиологического пищеварения в раннем возрасте телят и ягнят. Богатая таннинами формула оказывает вяжущее и противовоспалительное действие на слизистую оболочку кишечника. Эфирное масло орегано хорошо известно своими противовоспалительными, антимикробными и противогрибковыми свойствами, а также способностью снижать окислительный стресс. Сочетание этих растительных ингредиентов может стимулировать аппетит в сложные периоды.',
+  gutHealthLabel: lang === 'EN' ? 'Gut Health' : lang === 'AZ' ? 'Bağırsaq Sağlamlığı' : 'Здоровье Кишечника',
+  gutHealthDesc: lang === 'EN' ? 'Bring the digestive system back on track' : lang === 'AZ' ? 'Həzm sistemini yenidən işə salın' : 'Верните пищеварительную систему в норму',
+  benefits: lang === 'EN' ? [
+    'Quick regulation of intestinal disturbances',
+    'Anti-inflammatory and antimicrobial effects',
+    'A protected digestive tract',
+    'Reduction of pathogen pressure',
+  ] : lang === 'AZ' ? [
+    'Bağırsaq pozuntularının sürətli tənzimlənməsi',
+    'Iltihab əleyhinə və antimikrob təsirlər',
+    'Qorunan həzm traktı',
+    'Patogen təzyiqinin azaldılması',
+  ] : [
+    'Быстрое устранение кишечных расстройств',
+    'Противовоспалительные и антимикробные эффекты',
+    'Защищённый пищеварительный тракт',
+    'Снижение патогенной нагрузки',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '1 kg alu bag, 5 kg bucket, 20 kg alu bags' : lang === 'AZ' ? '1 kq alüminium torba, 5 kq vedrə, 20 kq alüminium torbalar' : '1 кг алюминиевый пакет, 5 кг ведро, 20 кг алюминиевые пакеты',
+});
 
 export default function TanniFitPlusModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -68,7 +93,7 @@ export default function TanniFitPlusModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -99,13 +124,13 @@ export default function TanniFitPlusModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    TanniFit Plus Dry is a complementary feed with botanical ingredients in order to stabilize water and electrolyte balance to support a physiological digestion in the early life of calves and lambs. The tannin-rich formula has astringent and anti-inflammatory effects on the gut mucosa. Essential oil of Oregano is well-known for its anti-inflammatory, antimicrobial and anti-fungal effects as well as its potential to reduce oxidative stress. The combination of these botanical ingredients might stimulate the appetite in challenging times.
+                    {data.features}
                   </p>
                   <div className="font-inter text-xs leading-relaxed mt-3" style={{ color: 'rgba(52,211,153,0.8)' }}>
-                    <strong>Gut Health</strong><br />Bring the digestive system back on track
+                    <strong>{data.gutHealthLabel}</strong><br />{data.gutHealthDesc}
                   </div>
                 </div>
               </div>
@@ -119,11 +144,11 @@ export default function TanniFitPlusModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(52,211,153,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {benefits.map(b => (
-                    <div key={b} className="flex items-start gap-2">
+                  {data.benefits.map((b, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#34d399' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
                     </div>
@@ -135,9 +160,9 @@ export default function TanniFitPlusModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(52,211,153,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(52,211,153,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    1 kg alu bag, 5 kg bucket, 20 kg alu bags
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

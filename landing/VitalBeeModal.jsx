@@ -1,16 +1,38 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Vital Bee', 'Liquid', 'Vitamin/Mineral/Amino Acids'];
-
-const benefits = [
-  'Ready-to-use vitamin, protein and amino acid rich mixture',
-  'Supports higher brooding and provides energy',
-  'Attractive taste for bees',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Vital Bee', 'Liquid', 'Vitamin/Mineral/Amino Acids'] : lang === 'AZ' ? ['Vital Bee', 'Maye', 'Vitamin/Mineral/Amino Turşular'] : ['Vital Bee', 'Жидкая', 'Витамин/Минерал/Аминокислоты'],
+  tagline: lang === 'EN' ? 'Bee productive' : lang === 'AZ' ? 'Arılar üçün məhsuldarlıq' : 'Пчёлы продуктивны',
+  features: lang === 'EN'
+    ? 'Vital Bee is a ready to use vitamin, protein and energy solution for bees in production. Organic source amino acids from hydrolyzed soy protein are easily bioavailable for better performance. The balanced vitamin combination helps to support bees for external conditions. The aroma and taste of Vital Bee are attractive for bees, supporting the intake.'
+    : lang === 'AZ'
+    ? 'Vital Bee, istehsalatda arılar üçün hazır istifadəli vitamin, zülal və enerji məhluldur. Hidrolizə edilmiş soya zülalından alınan üzvi aminturşular daha yaxşı performans üçün asan bioloji mənimsənilir. Balanslaşdırılmış vitamin kombinasiyası arıları xarici şəraitdə dəstəkləməyə kömək edir. Vital Bee-nin aroması və dadı arılar üçün cəlbedici olub, qəbulu dəstəkləyir.'
+    : 'Vital Bee — готовый к применению витаминно-белково-энергетический раствор для пчёл в производственных условиях. Аминокислоты органического происхождения из гидролизованного соевого белка легко усваиваются для повышения продуктивности. Сбалансированная комбинация витаминов помогает поддержать пчёл в неблагоприятных условиях окружающей среды. Аромат и вкус Vital Bee привлекательны для пчёл, что способствует его потреблению.',
+  benefits: lang === 'EN' ? [
+    'Ready-to-use vitamin, protein and amino acid rich mixture',
+    'Supports higher brooding and provides energy',
+    'Attractive taste for bees',
+  ] : lang === 'AZ' ? [
+    'Hazır istifadəli vitamin, zülal və aminturşularla zəngin qarışıq',
+    'Yüksək yumurta inkubasiyasını dəstəkləyir və enerji verir',
+    'Arılar üçün cəlbedici dad',
+  ] : [
+    'Готовая к применению смесь, богатая витаминами, белком и аминокислотами',
+    'Поддерживает интенсивное выращивание расплода и обеспечивает энергию',
+    'Привлекательный вкус для пчёл',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şüşə, 5 l və 25 l kanister' : '250 мл, 500 мл и 1 л бутылка, 5 л и 25 л канистра',
+});
 
 export default function VitalBeeModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -67,7 +89,7 @@ export default function VitalBeeModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -84,7 +106,7 @@ export default function VitalBeeModal({ open, onClose }) {
 
               {/* Tagline */}
               <div className="font-orbitron text-xl font-bold text-white tracking-wide" style={{ color: '#C89010' }}>
-                Bee productive
+                {data.tagline}
               </div>
 
               {/* Product image + description */}
@@ -103,10 +125,10 @@ export default function VitalBeeModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(200,144,16,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Vital Bee is a ready to use vitamin, protein and energy solution for bees in production. Organic source amino acids from hydrolyzed soy protein are easily bioavailable for better performance. The balanced vitamin combination helps to support bees for external conditions. The aroma and taste of Vital Bee are attractive for bees, supporting the intake.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -120,10 +142,10 @@ export default function VitalBeeModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(200,144,16,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#C89010' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -136,9 +158,9 @@ export default function VitalBeeModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(200,144,16,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(200,144,16,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(200,144,16,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml and 1 l bottle, 5 l and 25 l canister
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

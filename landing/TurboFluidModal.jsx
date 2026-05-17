@@ -1,17 +1,40 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, Package } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
 
-const tags = ['Turbo Fluid', 'Liquid', 'Heat Stress'];
-
-const benefits = [
-  'Prevention of nutritional deficiencies and of their consequences',
-  'Provides necessary elements for cell formation and metabolism',
-  'Helps to maintain production parameters, appetite, and growth in case of diseases',
-  'Replaces losses caused by stress factors',
-];
+const getModalData = (lang) => ({
+  tags: lang === 'EN' ? ['Turbo Fluid', 'Liquid', 'Heat Stress'] : lang === 'AZ' ? ['Turbo Fluid', 'Maye', 'İstilik Stresi'] : ['Turbo Fluid', 'Жидкая', 'Тепловой Стресс'],
+  features: lang === 'EN'
+    ? 'Turbo Fluid is a vitamin, amino acid-rich composition designed to promote resistance to infections and provide health, growth, and fertility. Livestock treated with Turbo Fluid are less sensitive to stress (e.g., due to heat or overcrowded housing), and the appetite remains unaffected, keeping up the production parameters.'
+    : lang === 'AZ'
+    ? 'Turbo Fluid infeksiyalara müqaviməti artırmaq, sağlamlıq, böyümə və fertilliliyi təmin etmək üçün nəzərdə tutulmuş vitamin və amin turşusu zəngin kompozisiyadır. Turbo Fluid ilə müalicə edilən heyvandarlıq stresə (məsələn, istilik və ya sıxlıq şəraitinə görə) daha az həssasdır, iştaha isə təsirlənməz qalaraq istehsal göstəricilərini saxlayır.'
+    : 'Turbo Fluid — это богатая витаминами и аминокислотами композиция, разработанная для повышения устойчивости к инфекциям и обеспечения здоровья, роста и фертильности. Животные, которых лечат Turbo Fluid, менее чувствительны к стрессу (например, из-за жары или переуплотнённого содержания), а аппетит остаётся неизменным, поддерживая производственные показатели.',
+  benefits: lang === 'EN' ? [
+    'Prevention of nutritional deficiencies and of their consequences',
+    'Provides necessary elements for cell formation and metabolism',
+    'Helps to maintain production parameters, appetite, and growth in case of diseases',
+    'Replaces losses caused by stress factors',
+  ] : lang === 'AZ' ? [
+    'Qida çatışmazlıqlarının və onların nəticələrinin qarşısının alınması',
+    'Hüceyrə formalaşması və metabolizm üçün lazımi elementləri təmin edir',
+    'Xəstəliklər zamanı istehsal göstəricilərini, iştahanı və böyüməni saxlamağa kömək edir',
+    'Stress faktorlarından yaranan itkiləri əvəz edir',
+  ] : [
+    'Профилактика питательных дефицитов и их последствий',
+    'Обеспечивает необходимые элементы для формирования клеток и метаболизма',
+    'Помогает поддерживать производственные показатели, аппетит и рост при заболеваниях',
+    'Восполняет потери, вызванные стрессовыми факторами',
+  ],
+  featureLabel: lang === 'EN' ? 'FEATURES' : lang === 'AZ' ? 'XÜSUSİYYƏTLƏR' : 'ХАРАКТЕРИСТИКИ',
+  benefitsLabel: lang === 'EN' ? 'BENEFITS' : lang === 'AZ' ? 'FAYDALARI' : 'ПРЕИМУЩЕСТВА',
+  packagingLabel: lang === 'EN' ? 'PACKAGING' : lang === 'AZ' ? 'QABLAŞDIRMA' : 'УПАКОВКА',
+  packagingDesc: lang === 'EN' ? '250 ml, 500 ml, and 1 l bottles, 5 l, and 25 l canisters' : lang === 'AZ' ? '250 ml, 500 ml və 1 l şişələr, 5 l və 25 l kanisterlər' : '250 мл, 500 мл и 1 л бутылки, 5 л и 25 л канистры',
+});
 
 export default function TurboFluidModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
   return (
     <AnimatePresence>
       {open && (
@@ -68,7 +91,7 @@ export default function TurboFluidModal({ open, onClose }) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
+                {data.tags.map(tag => (
                   <span
                     key={tag}
                     className="font-mono text-[10px] tracking-widest px-3 py-1 rounded-full"
@@ -104,10 +127,10 @@ export default function TurboFluidModal({ open, onClose }) {
 
                 <div className="flex-1">
                   <div className="font-mono text-[10px] tracking-[4px] mb-2" style={{ color: 'rgba(251,191,36,0.6)' }}>
-                    FEATURES
+                    {data.featureLabel}
                   </div>
                   <p className="font-inter text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                    Turbo Fluid is a vitamin, amino acid-rich composition designed to promote resistance to infections and provide health, growth, and fertility. Livestock treated with Turbo Fluid are less sensitive to stress (e.g., due to heat or overcrowded housing), and the appetite remains unaffected, keeping up the production parameters.
+                    {data.features}
                   </p>
                 </div>
               </div>
@@ -121,10 +144,10 @@ export default function TurboFluidModal({ open, onClose }) {
                 }}
               >
                 <div className="font-mono text-[10px] tracking-[4px] mb-4" style={{ color: 'rgba(251,191,36,0.6)' }}>
-                  BENEFITS
+                  {data.benefitsLabel}
                 </div>
                 <div className="space-y-3">
-                  {benefits.map((b, idx) => (
+                  {data.benefits.map((b, idx) => (
                     <div key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: '#fbbf24' }} />
                       <span className="font-inter text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{b}</span>
@@ -137,9 +160,9 @@ export default function TurboFluidModal({ open, onClose }) {
               <div className="flex items-start gap-3">
                 <Package className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(251,191,36,0.6)' }} />
                 <div>
-                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,191,36,0.6)' }}>PACKAGING</div>
+                  <div className="font-mono text-[10px] tracking-[4px] mb-1" style={{ color: 'rgba(251,191,36,0.6)' }}>{data.packagingLabel}</div>
                   <span className="font-inter text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    250 ml, 500 ml, and 1 l bottles, 5 l, and 25 l canisters
+                    {data.packagingDesc}
                   </span>
                 </div>
               </div>

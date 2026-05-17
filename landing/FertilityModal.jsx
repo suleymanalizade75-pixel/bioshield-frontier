@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, Egg } from 'lucide-react';
+import { useLang } from '@/lib/i18n';
+
+const getModalData = (lang) => ({
+  headerTitle: lang === 'EN' ? 'CATTLE · FERTILITY' : lang === 'AZ' ? 'MAL-QARA · FERTİLLİK' : 'СКОТ · ФЕРТИЛЬНОСТЬ',
+  headerSub: lang === 'EN' ? 'REPRODUCTIVE PERFORMANCE' : lang === 'AZ' ? 'REPRODUKTİV PERFORMANS' : 'РЕПРОДУКТИВНАЯ ПРОДУКТИВНОСТЬ',
+
+  label: lang === 'EN' ? 'Fertility' : lang === 'AZ' ? 'Fertillilk' : 'Фертильность',
+
+  desc: lang === 'EN'
+    ? 'Reproductive performance, egg production rate & hatchability optimization protocols.'
+    : lang === 'AZ'
+    ? 'Reproduktiv performans, yumurta istehsal nisbəti və yumurtaxəçəklik optimallaşdırma protokolları.'
+    : 'Протоколы оптимизации репродуктивной продуктивности, показателя яйценоскости и выводимости.',
+
+  products: ['Zincotin®'],
+});
 
 export default function FertilityModal({ open, onClose }) {
+  const { lang } = useLang();
+  const data = getModalData(lang);
+
   const fertilityData = {
     key: 'fertility',
-    label: 'Fertility',
+    label: data.label,
     Icon: Egg,
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.5)',
-    desc: 'Reproductive performance, egg production rate & hatchability optimization protocols.',
-    products: ['Zincotin®'],
+    desc: data.desc,
+    products: data.products,
   };
 
   return (
@@ -58,10 +77,10 @@ export default function FertilityModal({ open, onClose }) {
                 </div>
                 <div>
                   <div className="font-orbitron text-sm font-bold text-white tracking-[3px]">
-                    CATTLE · FERTILITY
+                    {data.headerTitle}
                   </div>
                   <div className="font-mono text-[9px] tracking-[3px] mt-0.5" style={{ color: 'rgba(167,139,250,0.55)' }}>
-                    REPRODUCTIVE PERFORMANCE
+                    {data.headerSub}
                   </div>
                 </div>
               </div>
