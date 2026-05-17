@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const translations = {
   EN: {
@@ -70,7 +70,6 @@ const translations = {
     footer: {
       resources: 'RESOURCES', contact: 'CONTACT',
       items: ['Vaccine Portfolio', 'Efficacy Data', 'Safety Protocols', 'Cold-Chain Info', 'Veterinary Preparations'],
-
       sendEmail: 'SEND US AN EMAIL', requestCall: 'REQUEST A CONVERSATION',
       location: 'Baku, Azerbaijan',
     },
@@ -80,16 +79,6 @@ const translations = {
       message: 'MESSAGE (UP TO 5,000 WORDS)', messagePlaceholder: 'Write your message here...',
       cancel: 'CANCEL', send: 'SEND', sending: 'SENDING...',
       successTitle: 'MESSAGE SENT SUCCESSFULLY', successDesc: "Thank you for reaching out. We'll get back to you shortly.",
-      // Form validation error messages
-      errors: {
-        required: 'This field is required',
-        nameRequired: 'Please enter your name',
-        emailRequired: 'Please enter your email',
-        emailInvalid: 'Please enter a valid email address',
-        subjectRequired: 'Please enter a subject',
-        messageRequired: 'Please enter your message',
-        messageTooLong: 'Message cannot exceed 5,000 characters',
-      },
     },
     appointment: {
       title: 'REQUEST A CONVERSATION',
@@ -99,25 +88,6 @@ const translations = {
       confirmNote: 'A confirmation email with join instructions will be sent to you.',
       successTitle: 'APPOINTMENT REQUESTED', successDesc: 'Check your email for confirmation details.',
       days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      yourName: 'YOUR NAME', email: 'EMAIL', duration: 'DURATION',
-      weekend: 'Weekends are not available',
-      pastDate: 'Past dates cannot be selected',
-      pastTime: 'Past times cannot be selected',
-      // Baku time info
-      timezone: 'Baku Time (AZT, UTC+4)',
-      businessHours: '09:00-13:00, 15:00-18:00 Baku Time',
-      // Form validation error messages
-      errors: {
-        required: 'This field is required',
-        nameRequired: 'Please enter your name',
-        emailRequired: 'Please enter your email',
-        emailInvalid: 'Please enter a valid email address',
-        dateRequired: 'Please select a date',
-        timeRequired: 'Please select a time',
-        weekendNotAvailable: 'Appointments cannot be booked on weekends',
-        outsideBusinessHours: 'Selected time is outside business hours (09:00-13:00, 15:00-18:00)',
-        publicHoliday: 'This date is a public holiday and is not available',
-      },
     },
     hud: {
       bodyTemp: 'BODY TEMP',
@@ -202,7 +172,7 @@ const translations = {
       canadaPermit: 'Canada CFIA Permit',
       unitPrice: 'UNIT PRICE',
       quantity: 'QUANTITY',
-      addToCart: 'ADD TO CART',
+      addToCart: 'ADD TO SUPPLY ORDER',
       addedToCart: 'ADDED TO CART',
       dosage: 'DOSAGE',
       storage: 'STORAGE',
@@ -222,12 +192,12 @@ const translations = {
       withdrawalPeriod: 'WITHDRAWAL PERIOD',
       activeIngredient: 'ACTIVE INGREDIENT',
       vaccineDescriptions: {
-        'FD-001': 'Delivers a guaranteed dose of passive antibodies to newborn calves for protection from E. coli and coronavirus-induced scours. Available as a bolus or single-use gel tube. Eliminates dependence on unpredictable maternal immune response. USDA approved.',
-        'TRI-001': 'Delivers a guaranteed dose of passive antibodies against E. coli K99+, coronavirus, and rotavirus to newborn calves. Triple protection in a single-use gel tube. Eliminates dependence on maternal vaccine response. USDA approved.',
+        'FD-001': 'Instantly delivers a guaranteed dose of passive antibodies to newborn calves to prevent scours caused by E. coli and coronavirus. Available as a bolus or single-dose gel tube. Removes reliance on variable dam- or calf-level vaccine responses. USDA approved.',
+        'TRI-001': 'Delivers a guaranteed dose of passive antibodies against E. coli K99+, coronavirus, and rotavirus to newborn calves. Triple-layer protection in a single-dose gel tube. Eliminates dependence on variable maternal vaccine responses. USDA approved.',
       },
     },
   },
-  
+
   AZ: {
     nav: { portfolio: 'PORTFEL', efficacy: 'EFFEKTİVLİK', technology: 'TEXNOLOGİYA', additives: 'ƏLAVƏLƏR', contact: 'ƏLAQƏ' },
     hero: {
@@ -266,7 +236,7 @@ const translations = {
     },
     additives: {
       tag: '005 — YEM ELMİ', title: 'SAĞLAMLIQ',
-      subtitle: 'Hər növ üçün dəqiq formulə edilmiş qida əlavələri və performans gücləndiriciləri. Tam məhsul çeşidini araşdırmaq üçün hər panelin üzərindən keçin.',
+      subtitle: 'Hər növ üçün dəqiq formulə edilmiş qida əlavələri və performans gücləndiriciləri. Tam məhsul çeşidini araşdırmaq üçün hər panelin üzərinden keçin.',
       feedTag: '006 — YEM HƏLLLƏRİ', feedTitle: 'YEM',
       feedSubtitle: 'Dəqiq qidalanma həlləri — yem optimallaşdırma protokollarını araşdırmaq üçün növün üzərindən keçin.',
       formTag: '007 — MƏHSUL FERMALARI', formTitle: 'FERMA',
@@ -317,16 +287,6 @@ const translations = {
       message: 'MESAJ (5.000 SÖZƏ QƏDƏR)', messagePlaceholder: 'Mesajınızı buraya yazın...',
       cancel: 'LƏĞV ET', send: 'GÖNDƏR', sending: 'GÖNDƏRİLİR...',
       successTitle: 'MESAJ UĞURLA GÖNDƏRİLDİ', successDesc: 'Bizimlə əlaqə saxladığınız üçün təşəkkür edirik. Tezliklə cavab verəcəyik.',
-      // Form validation error messages
-      errors: {
-        required: 'Bu sahə tələb olunur',
-        nameRequired: 'Zəhmət olmasa adınızı daxil edin',
-        emailRequired: 'Zəhmət olmasa e-poçtunuzu daxil edin',
-        emailInvalid: 'Zəhmət olmasa düzgün e-poçt ünvanı daxil edin',
-        subjectRequired: 'Zəhmət olmasa mövzunu daxil edin',
-        messageRequired: 'Zəhmət olmasa mesaj yazın',
-        messageTooLong: 'Mesaj 5.000 simvoldan çox ola bilməz',
-      },
     },
     appointment: {
       title: 'SÖHBƏT TƏLƏB EDİN',
@@ -336,25 +296,6 @@ const translations = {
       confirmNote: 'Qoşulma təlimatları olan təsdiqləmə e-poçtu sizə göndəriləcək.',
       successTitle: 'GÖRÜŞ TƏLƏB EDİLDİ', successDesc: 'Təsdiqləmə məlumatları üçün e-poçtunuzu yoxlayın.',
       days: ['Baz', 'B.e', 'Ç.a', 'Çər', 'C.a', 'Cüm', 'Şən'],
-      yourName: 'SIZIN ADNIZ', email: 'E-POÇT', duration: 'MÜDDƏT',
-      weekend: 'Həftəsonu günləri mövcud deyil',
-      pastDate: 'Keçmiş tarixlər seçilə bilməz',
-      pastTime: 'Keçmiş vaxtlar seçilə bilməz',
-      // Baku time info
-      timezone: 'Bakı Vaxtı (AZT, UTC+4)',
-      businessHours: '09:00-13:00, 15:00-18:00 Bakı Vaxtı',
-      // Form validation error messages
-      errors: {
-        required: 'Bu sahə tələb olunur',
-        nameRequired: 'Zəhmət olmasa adınızı daxil edin',
-        emailRequired: 'Zəhmət olmasa e-poçtunuzu daxil edin',
-        emailInvalid: 'Zəhmət olmasa düzgün e-poçt ünvanı daxil edin',
-        dateRequired: 'Zəhmət olmasa tarix seçin',
-        timeRequired: 'Zəhmət olmasa vaxt seçin',
-        weekendNotAvailable: 'Məsuliyyətlər həftəsonu günləri rezerv edilə bilməz',
-        outsideBusinessHours: 'Seçilmiş vaxt iş saatlarından kənar (09:00-13:00, 15:00-18:00)',
-        publicHoliday: 'Bu tarix mövcud deyil (dövlət bayramı)',
-      },
     },
     hud: {
       bodyTemp: 'BƏDƏN İSTİLİYİ',
@@ -406,106 +347,106 @@ const translations = {
       selectVaccine2: 'PEYVƏNDİ SEÇİN 2',
       chooseVaccine: 'Peyvənd seçin...',
       searchVaccines: 'Peyvəndlər axtarın...',
-      speciesCoverage: 'növ əhatə dairəsi',
+      speciesCoverage: 'növ əhatəsi',
       bothCover: 'HƏR İKİSİ ƏHATƏ EDİR',
-      onlyLabel: 'YALNIZ',
-      speciesAnalysis: 'Növ Əhatə Dairəsinin Analizi',
+      onlyLabel: 'TƏK',
+      speciesAnalysis: 'Növ Əhatə Analizi',
       detailedComparison: 'Ətraflı Müqayisə',
-      noCommon: 'Ortaq növ yoxdur',
+      noCommon: 'Ümumi növ yoxdur',
       noUnique: 'Unikal növ yoxdur',
-      selectTwo: 'Müqayisə üçün iki peyvənd seçin',
-      selectTwoDesc: 'Dozalama, effektivlik və növ əhatəsinin ətraflı müqayisəsi üçün yuxarıdakı açılan menyulardan iki peyvənd seçin.',
-      dosageForm: 'Dozaj Forması',
+      selectTwo: 'Müqayisə Üçün İki Peyvənd Seçin',
+      selectTwoDesc: 'Doza, effektivlik və növ əhatəsinin ətraflı müqayisəsini görmək üçün yuxarıdakı açılan menyulardan iki peyvənd seçin.',
+      dosageForm: 'Doz Forması',
       efficacyRate: 'Effektivlik Dərəcəsi',
       price: 'Qiymət (USD)',
-      speciesCoverageLabel: 'Növ Əhatə Dairəsi',
+      speciesCoverageLabel: 'Növ Əhatəsi',
       specification: 'XÜSUSİYYƏT',
       species: 'növ',
     },
     favorites: {
-      title: 'Sevimlilər',
-      added: 'Sevimlilərə əlavə edildi',
-      removed: 'Sevimlilərindən silindi',
+      title: 'Favoritlər',
+      added: 'Favoritlərə əlavə edildi',
+      removed: 'Favoritlərdən silindi',
     },
     product_detail: {
-      backToPortfolio: 'PORTFELƏ QAY',
-      presentation: 'TƏQDIMAT',
-      taqdimat: 'TƏQDIMAT (AZ)',
+      backToPortfolio: 'PORTFELƏ QAYIT',
+      presentation: 'TƏQDİMAT (EN)',
+      taqdimat: 'TƏQDİMAT',
       taqdimatOld: 'Təqdimat (AZ)',
-      taqdimatNew: 'Tri-Shield Slaydları (AZ)',
-      instructions: 'TALİMAT',
+      taqdimatNew: 'Tri-Shield Slaydlar (AZ)',
+      instructions: 'İSTİFADƏ QAYDASI',
       certificates: 'SERTİFİKATLAR',
       usdaLicense: 'USDA Lisenziyası',
       canadaPermit: 'Kanada CFIA İcazəsi',
-      unitPrice: 'ÜNİT QİYMƏTİ',
-      quantity: 'MİKDARı',
-      addToCart: 'SƏBƏTƏ ƏLAVƏ ET',
-      addedToCart: 'SƏBƏTƏ ƏLAVƏ EDİLDİ',
-      dosage: 'DOZALAMA',
+      unitPrice: 'VAHİD QİYMƏTİ',
+      quantity: 'MİQDAR',
+      addToCart: 'SİFARİŞƏ ƏLAVƏ ET',
+      addedToCart: 'SİFARİŞƏ ƏLAVƏ EDİLDİ',
+      dosage: 'DOZAJ',
       storage: 'SAXLAMA',
       efficacy: 'EFFEKTİVLİK',
       immunity: 'İMMUNİTET',
-      packSize: 'PAKET HƏCMİ',
+      packSize: 'PAKET ÖLÇÜSÜ',
       days: 'gün',
       doses: 'doza',
-      immunityBuildUp: 'İMMUNİTET FORMALAŞDIRMASI',
+      immunityBuildUp: 'İMMUNİTET FORMALAŞMASI',
       day: 'GÜN',
       notFound: 'Peyvənd tapılmadı.',
-      clinicalIndication: 'KLİNİK GÖSTƏRICI',
-      routeOfAdministration: 'TƏTBİQ ÜSULU',
-      treatmentDuration: 'TEDAVİ MÜDDƏTİ',
-      ageRestrictions: 'YAŞ MƏHDUDIYYƏTLƏRI',
-      contraindications: 'ƏKSTƏ GÖSTƏRİŞLƏR',
-      withdrawalPeriod: 'ÇIKIŞ MÜDDƏTİ',
-      activeIngredient: 'AKTİV CİSM',
+      clinicalIndication: 'KLİNİK GÖSTƏRİŞ',
+      routeOfAdministration: 'İSTİFADƏ YOLU',
+      treatmentDuration: 'MÜALİCƏ MÜDDƏTİ',
+      ageRestrictions: 'YAŞ MƏHDUDIYYƏTLƏRƏ',
+      contraindications: 'ƏLDƏ SALIŞ',
+      withdrawalPeriod: 'GERİ ÇƏKİLMƏ MÜDDƏTİ',
+      activeIngredient: 'FƏAL MADDƏ',
       vaccineDescriptions: {
-        'FD-001': 'Yeni doğulmuş cəlflərə E. coli və koronavirusa bağlı ishaldan qorunmaq üçün zəmanətli mütləq antikor dozası təqdim edir. Bolus və ya tək istifadəlik jel borusu şəklində mövcuddur. Proqnostikləşdirilə biləyən ana immun cavabından asılılığı aradan qaldırır. USDA tərəfindən təsdiq edilib.',
-        'TRI-001': 'Yeni doğulmuş cəlflərə E. coli K99+, koronavirus və rotavirus əleyhinə zəmanətli mütləq antikor dozası təqdim edir. Tək istifadəlik jel borusunda üçlü qoruma. Ana peyvənd cavabından asılılığı aradan qaldırır. USDA tərəfindən təsdiq edilib.',
+        'FD-001': 'Yeni doğulmuş buzovlara E. coli və koronavirus səbəbindən yaranan ishala qarşı zəmanətli passiv antikor dozası dərhal verir. Bolus və ya tək dozalı gel borusu kimi mövcuddur. Ana inəyin peyvənd cavabına etibar etmə ehtiyacını aradan qaldırır. USDA tərəfindən təsdiqlənmişdir.',
+        'TRI-001': 'Yeni doğulmuş buzovlara E. coli K99+, koronavirus və rotavirusa qarşı zəmanətli passiv antikor dozası çatdırır. Tək dozalı gel borucuğunda üçqat qoruma. Ana peyvənd cavabından asılılığı aradan qaldırır. USDA tərəfindən təsdiqlənmişdir.',
       },
     },
   },
-  
+
   RU: {
-    nav: { portfolio: 'ПОРТФЕЛЬ', efficacy: 'ЭФФЕКТИВНОСТЬ', technology: 'ТЕХНОЛОГИЯ', additives: 'ДОБАВКИ', contact: 'КОНТАКТ' },
+    nav: { portfolio: 'ПОРТФЕЛЬ', efficacy: 'ЭФФЕКТИВНОСТЬ', technology: 'ТЕХНОЛОГИИ', additives: 'ДОБАВКИ', contact: 'КОНТАКТ' },
     hero: {
-      tag: 'СИС.ОНЛАЙН',
+      tag: 'СИСТЕМА.ОНЛАЙН',
       title1: 'ПРОАКТИВНАЯ', title2: 'ЗАЩИТА', title3: 'ПРОТОКОЛ',
-      subtitle: 'Передовые биологические средства защиты, спроектированные для будущего здоровья скота. Точные вакцины, подкрепленные молекулярной наукой и целостностью холодовой цепи.',
-      cta1: 'ИЗУЧИТЬ ПОРТФЕЛЬ ВАКЦИН', cta2: 'ПРОСМОТРЕТЬ ДАННЫЕ ОБ ЭФФЕКТИВНОСТИ',
-      doses: 'ДОЗ ДОСТАВЛЕНО ГЛОБАЛЬНО', coldChain: 'ХОЛОДНАЯ ЦЕПЬ АКТИВНА',
+      subtitle: 'Передовые биологические средства защиты, разработанные для будущего животноводства. Точные вакцины, подкреплённые молекулярной наукой и целостностью холодовой цепи.',
+      cta1: 'ИЗУЧИТЬ ПОРТФЕЛЬ ВАКЦИН', cta2: 'ДАННЫЕ ЭФФЕКТИВНОСТИ',
+      doses: 'ДОСТАВЛЕНО ДОЗ ПО ВСЕМУ МИРУ', coldChain: 'ХОЛОДОВАЯ ЦЕПЬ АКТИВНА',
     },
     catalog: {
       tag: '002 — МОЛЕКУЛЯРНЫЙ КАТАЛОГ', title: 'ПОРТФЕЛЬ ВАКЦИН',
-      subtitle: 'Точные биологические средства защиты для каждого вида вашего хозяйства. Каждый продукт проходит строгую клиническую валидацию.',
-      empty: 'В этой категории вакцин не найдено.',
+      subtitle: 'Точно разработанные biological средства защиты для каждого вида в вашем хозяйстве. Каждый продукт проходит строгую клиническую проверку.',
+      empty: 'Вакцины в этой категории не найдены.',
     },
     comparison: {
-      tag: '005 — СРАВНЕНИЕ ПРОДУКТОВ', title: 'ВЫБЕРИТЕ СВОЙ ЩИТ',
+      tag: '005 — СРАВНЕНИЕ ПРОДУКТОВ', title: 'ВЫБЕРИТЕ ВАШ ЩИТ',
       subtitle: 'Оба продукта обеспечивают гарантированный пассивный иммунитет с рождения. Tri-Shield добавляет третий уровень защиты от ротавируса.',
-      diseaseCoverage: 'ОХВАТ БОЛЕЗНЕЙ', specifications: 'СПЕЦИФИКАЦИИ',
+      diseaseCoverage: 'ОХВАТ БОЛЕЗНЕЙ', specifications: 'ХАРАКТЕРИСТИКИ',
     },
     tech: {
-      tag: '004 — ТЕХНОЛОГИЯ', title: 'НАУКА, СТОЯЩАЯ ЗА', title2: 'ЩИТОМ',
+      tag: '004 — ТЕХНОЛОГИИ', title: 'НАУКА ЗА', title2: 'ЩИТОМ',
       features: [
-        { title: 'МОЛЕКУЛЯРНАЯ ТОЧНОСТЬ', description: 'Каждая партия вакцины проходит нанослойной анализ качества, обеспечивающий стабильную концентрацию антигена и молекулярную стабильность.' },
-        { title: 'ЦЕЛОСТНОСТЬ ХОЛОДОВОЙ ЦЕПИ', description: 'Мониторинг температуры в реальном времени от лаборатории до фермы. Отслеживаемые по GPS партии поддерживают температуру 2-8°C во время доставки.' },
-        { title: 'ДОЗИРОВАНИЕ НА ОСНОВЕ ДАННЫХ', description: 'Протоколы дозирования, оптимизированные ИИ, в соответствии с видом, весом и региональными данными о распространении болезней. Нажмите, чтобы попробовать.' },
-        { title: 'ГЛОБАЛЬНОЕ СООТВЕТСТВИЕ', description: 'Сертифицировано в соответствии с 40+ нормативными базами. Производится по стандартам GMP в соответствии с самыми высокими международными стандартами безопасности.' },
+        { title: 'МОЛЕКУЛЯРНАЯ ТОЧНОСТЬ', description: 'Каждая партия вакцин проходит нано-масштабный анализ качества, обеспечивая стабильную концентрацию антигенов и молекулярную стабильность.' },
+        { title: 'ЦЕЛОСТНОСТЬ ХОЛОДОВОЙ ЦЕПИ', description: 'Мониторинг температуры в реальном времени от лаборатории до фермы. Отслеживаемые GPS отправления поддерживают 2-8°C в пути.' },
+        { title: 'ДОЗИРОВАНИЕ НА ОСНОВЕ ДАННЫХ', description: 'ИИ-оптимизированные протоколы дозирования, калиброванные по виду, весу и региональным данным о распространённости болезней. Нажмите, чтобы попробовать.' },
+        { title: 'ГЛОБАЛЬНОЕ СООТВЕТСТВИЕ', description: 'Сертифицировано по 40+ нормативным системам. GMP-производство по высочайшим международным стандартам безопасности.' },
       ],
     },
     additives: {
       tag: '005 — НАУКА О КОРМАХ', title: 'ЗДОРОВЬЕ',
-      subtitle: 'Точно сформулированные пищевые добавки и стимуляторы производительности для каждого вида. Наведите курсор на каждую панель, чтобы изучить полный спектр продуктов.',
-      feedTag: '006 — РЕШЕНИЯ ДЛЯ КОРМОВ', feedTitle: 'КОРМ',
-      feedSubtitle: 'Решения точного питания — наведите курсор на вид, чтобы изучить протоколы оптимизации кормления.',
-      formTag: '007 — ФЕРМЫ ПРОДУКТОВ', formTitle: 'ФЕРМА',
-      formSubtitle: 'Специализированные формулировки — наведите курсор на вид, чтобы изучить механизмы доставки и оптимизацию биодоступности.',
-      selectGroup: 'ВЫБЕРИТЕ ГРУППУ',
-      healthButton: 'Здоровье', feedButton: 'Корм', farmButton: 'Ферма',
-      poultry: 'ПТИЦА', sheep: 'ОВЦЫ', goats: 'КОЗЫ', cattle: 'КРУПНЫЙ РОГАТЫЙ СКОТ', swine: 'СВИНЬИ', aquaculture: 'АКВА', bees: 'ПЧЕЛЫ',
+      subtitle: 'Точно разработанные пищевые добавки и усилители производительности для каждого вида. Наведите курсор на каждую панель для изучения полного ассортимента.',
+      feedTag: '006 — КОРМОВЫЕ РЕШЕНИЯ', feedTitle: 'КОРМ',
+      feedSubtitle: 'Точные решения по питанию — наведите курсор на вид для изучения протоколов оптимизации кормления.',
+      formTag: '007 — ФЕРМЫ ПРОДУКТА', formTitle: 'ФЕРМА',
+      formSubtitle: 'Специализированные составы — наведите курсор на вид для изучения механизмов доставки и биодоступности.',
+      selectGroup: 'ВЫБОР ГРУППЫ',
+      healthButton: 'Здоровье', feedButton: 'Корма', farmButton: 'Ферма',
+      poultry: 'ПТИЦА', sheep: 'ОВЦЫ', goats: 'КОЗЫ', cattle: 'КРС', swine: 'СВИНЬИ', aquaculture: 'АКВА', bees: 'ПЧЁЛЫ',
     },
     efficacy: {
-      tag: '003 — ПРОТОКОЛ ЭФФЕКТИВНОСТИ', title: 'КЛИНИЧЕСКОЕ ДОКАЗАТЕЛЬСТВО',
+      tag: '003 — ПРОТОКОЛ ЭФФЕКТИВНОСТИ', title: 'КЛИНИЧЕСКИЕ ДАННЫЕ',
       stats: [
         { label: 'СР. ЭФФЕКТИВНОСТЬ', value: '100%' },
         { label: 'ОХВАТ ВИДОВ', value: '1' },
@@ -534,7 +475,6 @@ const translations = {
     footer: {
       resources: 'РЕСУРСЫ', contact: 'КОНТАКТ',
       items: ['Портфель вакцин', 'Данные эффективности', 'Протоколы безопасности', 'Информация о холодовой цепи', 'Ветеринарные препараты'],
-
       sendEmail: 'НАПИСАТЬ НАМ', requestCall: 'ЗАПРОСИТЬ РАЗГОВОР',
       location: 'Баку, Азербайджан',
     },
@@ -544,16 +484,6 @@ const translations = {
       message: 'СООБЩЕНИЕ (ДО 5.000 СЛОВ)', messagePlaceholder: 'Напишите ваше сообщение здесь...',
       cancel: 'ОТМЕНА', send: 'ОТПРАВИТЬ', sending: 'ОТПРАВЛЯЕТСЯ...',
       successTitle: 'СООБЩЕНИЕ УСПЕШНО ОТПРАВЛЕНО', successDesc: 'Спасибо за обращение. Мы свяжемся с вами в ближайшее время.',
-      // Form validation error messages
-      errors: {
-        required: 'Это поле обязательно',
-        nameRequired: 'Пожалуйста, введите ваше имя',
-        emailRequired: 'Пожалуйста, введите адрес электронной почты',
-        emailInvalid: 'Пожалуйста, введите действительный адрес электронной почты',
-        subjectRequired: 'Пожалуйста, введите тему',
-        messageRequired: 'Пожалуйста, напишите сообщение',
-        messageTooLong: 'Сообщение не может превышать 5000 символов',
-      },
     },
     appointment: {
       title: 'ЗАПРОСИТЬ РАЗГОВОР',
@@ -563,39 +493,20 @@ const translations = {
       confirmNote: 'Вам будет отправлено письмо с подтверждением и инструкциями.',
       successTitle: 'ВСТРЕЧА ЗАПРОШЕНА', successDesc: 'Проверьте вашу электронную почту для получения деталей.',
       days: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-      yourName: 'ВАШЕ ИМЯ', email: 'ЭЛЕКТРОННАЯ ПОЧТА', duration: 'ПРОДОЛЖИТЕЛЬНОСТЬ',
-      weekend: 'Выходные дни недоступны',
-      pastDate: 'Прошлые даты нельзя выбирать',
-      pastTime: 'Прошлые время нельзя выбирать',
-      // Baku time info
-      timezone: 'Время Баку (AZT, UTC+4)',
-      businessHours: '09:00-13:00, 15:00-18:00 Время Баку',
-      // Form validation error messages
-      errors: {
-        required: 'Это поле обязательно',
-        nameRequired: 'Пожалуйста, введите ваше имя',
-        emailRequired: 'Пожалуйста, введите адрес электронной почты',
-        emailInvalid: 'Пожалуйста, введите действительный адрес электронной почты',
-        dateRequired: 'Пожалуйста, выберите дату',
-        timeRequired: 'Пожалуйста, выберите время',
-        weekendNotAvailable: 'Встречи не могут быть запланированы на выходные',
-        outsideBusinessHours: 'Выбранное время находится вне рабочего времени (09:00-13:00, 15:00-18:00)',
-        publicHoliday: 'Эта дата недоступна (государственный праздник)',
-      },
     },
     hud: {
       bodyTemp: 'ТЕМПЕРАТУРА ТЕЛА',
       immunity: 'ИММУНИТЕТ',
-      heartRate: 'ЧАСТОТА СЕРДЕЧНЫХ СОКРАЩЕНИЙ',
+      heartRate: 'СЕРДЦЕБИЕНИЕ',
     },
     animals: {
-      poultry: { label: 'ПТИЦА', species: 'Бройлеры, несушки и индейки' },
-      bovine: { label: 'КРУПНЫЙ РОГАТЫЙ СКОТ', species: 'Молочный, мясной и телята' },
-      porcine: { label: 'СВИНЬИ', species: 'Свиноматки, поросята и откормочники' },
-      aquaculture: { label: 'АКВАКУЛЬТУРА', species: 'Рыба, креветки и ракообразные' },
-      apiculture: { label: 'ПЧЕЛЫ', species: 'Мёд, одиночные и маточные пчелы' },
-      ovine: { label: 'ОВЦЫ', species: 'Молочные, мясные и ягнята' },
-      caprine: { label: 'КОЗЫ', species: 'Молочные, мясные и козлята' },
+      poultry: { label: 'ПТИЦА', species: 'Бройлеры, Несушки & Индейки' },
+      bovine: { label: 'КРС', species: 'Молочный, Мясной & Телята' },
+      porcine: { label: 'СВИНЬИ', species: 'Свиноматки, Поросята & Откормочники' },
+      aquaculture: { label: 'АКВАКУЛЬТУРА', species: 'Рыба, Креветки & Ракообразные' },
+      apiculture: { label: 'ПЧЁЛЫ', species: 'Мёд, Одиночные & Матки' },
+      ovine: { label: 'ОВЦЫ', species: 'Молочные, Мясные & Ягнята' },
+      caprine: { label: 'КОЗЫ', species: 'Молочные, Мясные & Козлята' },
     },
     buttons: {
       back: 'НАЗАД',
@@ -696,9 +607,25 @@ const translations = {
 const LangContext = createContext({ lang: 'AZ', t: translations.AZ, setLang: () => {} });
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState('AZ');
+  const [lang, setLang] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('shields_lang');
+      if (saved && translations[saved]) return saved;
+    }
+    return 'AZ';
+  });
+
+  const handleSetLang = (newLang) => {
+    if (translations[newLang]) {
+      setLang(newLang);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('shields_lang', newLang);
+      }
+    }
+  };
+
   return (
-    <LangContext.Provider value={{ lang, t: translations[lang], setLang }}>
+    <LangContext.Provider value={{ lang, t: translations[lang], setLang: handleSetLang }}>
       {children}
     </LangContext.Provider>
   );
