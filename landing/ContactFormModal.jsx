@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, CheckCircle2 } from 'lucide-react';
+import { X, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useLang } from '@/lib/i18n';
 
@@ -10,9 +10,56 @@ export default function ContactFormModal({ open, onClose }) {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+
+    // Validate name
+    if (!formData.name.trim()) {
+      errors.name = c.errors.nameRequired;
+    }
+
+    // Validate email
+    if (!formData.email.trim()) {
+      errors.email = c.errors.emailRequired;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = c.errors.emailInvalid;
+    }
+
+    // Validate subject
+    if (!formData.subject.trim()) {
+      errors.subject = c.errors.subjectRequired;
+    }
+
+    // Validate message
+    if (!formData.message.trim()) {
+      errors.message = c.errors.messageRequired;
+    } else if (formData.message.length > 5000) {
+      errors.message = c.errors.messageTooLong;
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleInputChange = (field) => {
+    return (e) => {
+      setFormData({ ...formData, [field]: e.target.value });
+      // Clear error for this field when user starts typing
+      if (validationErrors[field]) {
+        setValidationErrors({ ...validationErrors, [field]: '' });
+      }
+    };
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -26,6 +73,7 @@ export default function ContactFormModal({ open, onClose }) {
       setSuccess(true);
       setTimeout(() => {
         setFormData({ name: '', email: '', subject: '', message: '' });
+        setValidationErrors({});
         setSuccess(false);
         onClose();
       }, 3000);
@@ -99,62 +147,115 @@ export default function ContactFormModal({ open, onClose }) {
                     onSubmit={handleSubmit}
                     className="space-y-4"
                   >
+                    {/* Name Field */}
                     <div>
                       <label className="font-mono text-[10px] tracking-[3px] text-white/70 mb-2 block">{c.name}</label>
                       <input
                         type="text"
-                        required
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm"
-                        style={{ background: '#ffffff', color: '#111111', borderColor: 'rgba(0,0,0,0.15)' }}
+                        onChange={handleInputChange('name')}
+                        className={`w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm transition-colors ${
+                          validationErrors.name ? 'border-red-500 bg-red-50/10' : ''
+                        }`}
+                        style={{
+                          background: validationErrors.name ? 'rgba(239, 68, 68, 0.05)' : '#ffffff',
+                          color: '#111111',
+                          borderColor: validationErrors.name ? '#ef4444' : 'rgba(0,0,0,0.15)',
+                        }}
                         placeholder={c.name}
                       />
+                      {validationErrors.name && (
+                        <div className="text-red-400 text-[9px] mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          {validationErrors.name}
+                        </div>
+                      )}
                     </div>
 
+                    {/* Email Field */}
                     <div>
                       <label className="font-mono text-[10px] tracking-[3px] text-white/70 mb-2 block">{c.email}</label>
                       <input
                         type="email"
-                        required
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm"
-                        style={{ background: '#ffffff', color: '#111111', borderColor: 'rgba(0,0,0,0.15)' }}
+                        onChange={handleInputChange('email')}
+                        className={`w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm transition-colors ${
+                          validationErrors.email ? 'border-red-500' : ''
+                        }`}
+                        style={{
+                          background: validationErrors.email ? 'rgba(239, 68, 68, 0.05)' : '#ffffff',
+                          color: '#111111',
+                          borderColor: validationErrors.email ? '#ef4444' : 'rgba(0,0,0,0.15)',
+                        }}
                         placeholder="your@email.com"
                       />
+                      {validationErrors.email && (
+                        <div className="text-red-400 text-[9px] mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          {validationErrors.email}
+                        </div>
+                      )}
                     </div>
 
+                    {/* Subject Field */}
                     <div>
                       <label className="font-mono text-[10px] tracking-[3px] text-white/70 mb-2 block">{c.subject}</label>
                       <input
                         type="text"
-                        required
                         value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm"
-                        style={{ background: '#ffffff', color: '#111111', borderColor: 'rgba(0,0,0,0.15)' }}
+                        onChange={handleInputChange('subject')}
+                        className={`w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm transition-colors ${
+                          validationErrors.subject ? 'border-red-500' : ''
+                        }`}
+                        style={{
+                          background: validationErrors.subject ? 'rgba(239, 68, 68, 0.05)' : '#ffffff',
+                          color: '#111111',
+                          borderColor: validationErrors.subject ? '#ef4444' : 'rgba(0,0,0,0.15)',
+                        }}
                         placeholder={c.subject}
                       />
+                      {validationErrors.subject && (
+                        <div className="text-red-400 text-[9px] mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          {validationErrors.subject}
+                        </div>
+                      )}
                     </div>
 
+                    {/* Message Field */}
                     <div>
                       <label className="font-mono text-[10px] tracking-[3px] text-white/70 mb-2 block">{c.message}</label>
                       <textarea
-                        required
                         value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value.slice(0, 5000) })}
+                        onChange={handleInputChange('message')}
                         rows={8}
                         maxLength={5000}
-                        className="w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm resize-none"
-                        style={{ background: '#ffffff', color: '#111111', borderColor: 'rgba(0,0,0,0.15)' }}
+                        className={`w-full rounded-lg px-4 py-2.5 border focus:outline-none font-inter text-sm resize-none transition-colors ${
+                          validationErrors.message ? 'border-red-500' : ''
+                        }`}
+                        style={{
+                          background: validationErrors.message ? 'rgba(239, 68, 68, 0.05)' : '#ffffff',
+                          color: '#111111',
+                          borderColor: validationErrors.message ? '#ef4444' : 'rgba(0,0,0,0.15)',
+                        }}
                         placeholder={c.messagePlaceholder}
                       />
-                      <div className="mt-1 text-right text-[9px] text-white/50">
-                        {formData.message.length}/5000 characters
+                      <div className="flex items-center justify-between mt-1">
+                        <div>
+                          {validationErrors.message && (
+                            <div className="text-red-400 text-[9px] flex items-center gap-1">
+                              <AlertCircle className="w-3 h-3" />
+                              {validationErrors.message}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-right text-[9px] text-white/50">
+                          {formData.message.length}/5000
+                        </div>
                       </div>
                     </div>
 
+                    {/* Action Buttons */}
                     <div className="flex gap-3 pt-4">
                       <button
                         type="button"
