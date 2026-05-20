@@ -22,10 +22,50 @@ const AZERBAIJAN_PUBLIC_HOLIDAYS = [
   '12-31', // World Azerbaijanis Solidarity Day
 ];
 
+// Islamic holidays (dates vary by lunar calendar - approximate dates for 2024-2025)
+// Ramadan: 9th month of Islamic calendar (approximately 30 days)
+// Qurban (Eid al-Adha): 10th day of Dhul-Hijjah (approximately 3-4 days)
+const ISLAMIC_HOLIDAYS = [
+  // Ramadan 2024: March 11 - April 9
+  { start: '03-11', end: '04-09', name: 'Ramadan' },
+  // Qurban 2024: June 15-18 (approximate)
+  { start: '06-15', end: '06-18', name: 'Qurban' },
+  // Ramadan 2025: February 28 - March 30
+  { start: '02-28', end: '03-30', name: 'Ramadan' },
+  // Qurban 2025: June 4-7 (approximate)
+  { start: '06-04', end: '06-07', name: 'Qurban' },
+];
+
 function isPublicHoliday(date) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-  return AZERBAIJAN_PUBLIC_HOLIDAYS.includes(`${month}-${day}`);
+  const dateStr = `${month}-${day}`;
+  
+  // Check fixed holidays
+  if (AZERBAIJAN_PUBLIC_HOLIDAYS.includes(dateStr)) return true;
+  
+  // Check Islamic holidays
+  for (let holiday of ISLAMIC_HOLIDAYS) {
+    const [startMonth, startDay] = holiday.start.split('-').map(Number);
+    const [endMonth, endDay] = holiday.end.split('-').map(Number);
+    const currentMonth = date.getMonth() + 1;
+    const currentDay = date.getDate();
+    
+    // Handle holidays that don't cross year boundary
+    if (startMonth === endMonth) {
+      if (currentMonth === startMonth && currentDay >= startDay && currentDay <= endDay) {
+        return true;
+      }
+    } else {
+      // Handle holidays that cross year boundary (e.g., Dec-Jan)
+      if ((currentMonth === startMonth && currentDay >= startDay) || 
+          (currentMonth === endMonth && currentDay <= endDay)) {
+        return true;
+      }
+    }
+  }
+  
+  return false;
 }
 
 export default function AppointmentModal({ open, onClose }) {
@@ -75,7 +115,7 @@ export default function AppointmentModal({ open, onClose }) {
     return BAKU_BUSINESS_HOURS.some(period => hour >= period.start && hour < period.end);
   };
 
-  // Check if date is available: not a weekend, not in the past, not a public holiday
+  // Check if date is available: not a weekend, not in the past, not a public holiday, not Islamic holiday
   const isDateAvailable = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -87,7 +127,7 @@ export default function AppointmentModal({ open, onClose }) {
     const dayOfWeek = date.getDay();
     if (dayOfWeek === 0 || dayOfWeek === 6) return false;
 
-    // Check if public holiday
+    // Check if public holiday (includes both fixed and Islamic holidays)
     if (isPublicHoliday(date)) return false;
 
     return true;
@@ -305,17 +345,17 @@ export default function AppointmentModal({ open, onClose }) {
                           <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(174,100,54,0.6)' }} />
                           <div className="font-mono text-[9px] text-white/70">
                             {lang === 'EN'
-                              ? 'Weekends and public holidays are not available'
+                              ? 'Weekends, public holidays, Ramadan, and Qurban are not available'
                               : lang === 'AZ'
-                              ? 'Həftəsonu günləri və dövlət bayramları mövcud deyil'
-                              : 'Выходные и праздничные дни недоступны'}
+                              ? 'Həftəsonu günləri, dövlət bayramları, Ramazan və Qurban mövcud deyil'
+                              : 'Выходные, праздники, Рамадан и Курбан недоступны'}
                           </div>
                         </div>
 
                         <button
                           onClick={() => selectedDate && setStep(2)}
                           disabled={!selectedDate}
-                          className="w-full py-2.5 rounded-lg font-orbitron text-[10px] tracking-widest text-white transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full py-2.5 rounded-lg font-orbitron text-[10px] tracking-widest text-white transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50"
                           style={{
                             background: selectedDate ? 'linear-gradient(135deg,#a66432,#c87a3c,#a66432)' : 'rgba(174,100,54,0.2)',
                             border: '1.5px solid rgba(174,100,54,0.3)',
@@ -382,7 +422,7 @@ export default function AppointmentModal({ open, onClose }) {
                           <button
                             onClick={() => selectedTime && setStep(3)}
                             disabled={!selectedTime}
-                            className="flex-1 py-2.5 rounded-lg font-orbitron text-[10px] tracking-widest text-white transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 py-2.5 rounded-lg font-orbitron text-[10px] tracking-widest text-white transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50"
                             style={{
                               background: selectedTime ? 'linear-gradient(135deg,#a66432,#c87a3c,#a66432)' : 'rgba(174,100,54,0.2)',
                               border: '1.5px solid rgba(174,100,54,0.3)',
@@ -498,7 +538,7 @@ export default function AppointmentModal({ open, onClose }) {
                           <button
                             onClick={handleConfirm}
                             disabled={loading}
-                            className="flex-1 py-2.5 rounded-lg font-orbitron text-[10px] tracking-widest text-white transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="flex-1 py-2.5 rounded-lg font-orbitron text-[10px] tracking-widest text-white transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50"
                             style={{
                               background: 'linear-gradient(135deg,#a66432,#c87a3c,#a66432)',
                               border: '1.5px solid rgba(174,100,54,0.5)',
