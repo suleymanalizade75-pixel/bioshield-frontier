@@ -21,7 +21,6 @@ export default function Navbar({ cartCount = 0, onSearchOpen }) {
     { label: t.nav.efficacy,   href: '#efficacy' },
     { label: t.nav.technology, href: '#technology' },
     { label: t.nav.additives,  href: '#additives' },
-    { label: t.nav.contact,    href: '#contact' },
   ];
 
   return (
