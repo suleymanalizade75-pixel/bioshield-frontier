@@ -1,6 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function PageNotFound() {
   const location = useLocation();
@@ -15,10 +14,10 @@ export default function PageNotFound() {
           The page "{location.pathname.substring(1)}" could not be located in the system.
         </p>
         <Link to="/">
-          <Button className="font-orbitron text-xs tracking-widest bg-primary text-primary-foreground px-8 py-5">
-            <ShieldCheck className="w-4 h-4 mr-2" />
+          <button className="font-orbitron text-xs tracking-widest bg-primary text-primary-foreground px-8 py-5 rounded hover:opacity-90 transition">
+            <ShieldCheck className="w-4 h-4 mr-2 inline" />
             RETURN TO BASE
-          </Button>
+          </button>
         </Link>
       </div>
     </div>
