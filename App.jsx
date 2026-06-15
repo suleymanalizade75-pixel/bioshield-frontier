@@ -1,6 +1,3 @@
-
-
-import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -52,16 +49,12 @@ const AuthenticatedApp = () => {
 
 
 function App() {
-
   return (
     <AuthProvider>
       <LangProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <AuthenticatedApp />
-          </Router>
-         
-        </QueryClientProvider>
+        <Router>
+          <AuthenticatedApp />
+        </Router>
       </LangProvider>
     </AuthProvider>
   )
