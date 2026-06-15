@@ -9,7 +9,6 @@ import ProductImport from '@/pages/ProductImport';
 import VaccineCompare from '@/pages/VaccineCompare';
 
 const PublicApp = () => {
-  // Render the main app with no authentication required
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
@@ -22,7 +21,6 @@ const PublicApp = () => {
     </Routes>
   );
 };
-
 
 function App() {
   return (
