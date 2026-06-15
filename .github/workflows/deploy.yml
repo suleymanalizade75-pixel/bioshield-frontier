@@ -35,7 +35,7 @@ jobs:
         run: npm run build
 
       - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           # Укажи папки сборки: './dist' для Vite или './build' для стандартного React
           path: ./dist
