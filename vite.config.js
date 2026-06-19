@@ -7,8 +7,8 @@ export default defineConfig({
   logLevel: 'error',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-  plugins: [react()]
-});
+  plugins: [react()],
+})
