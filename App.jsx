@@ -11,8 +11,7 @@ import VaccineCompare from './pages/VaccineCompare.jsx';
 
 // вспомогательные
 import PageNotFound from './lib/PageNotFound.jsx';
-import './i18n.jsx';
-
+import { LangProvider } from './i18n/index.js'; // убедись, что LangProvider экспортируется из i18n
 
 const PublicApp = () => {
   return (
