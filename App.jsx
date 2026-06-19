@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PageNotFound from './lib/PageNotFound';
-import { LangProvider } from './i18n';
-import Landing from '@/pages/Landing';
-import ProductDetail from '@/pages/ProductDetail';
-import Cart from '@/pages/Cart';
-import ProductsCatalog from '@/pages/ProductsCatalog';
-import ProductImport from '@/pages/ProductImport';
-import VaccineCompare from '@/pages/VaccineCompare';
+import PageNotFound from './lib/PageNotFound.jsx';
+import { LangProvider } from './i18n/index.js';
+import Landing from '@/pages/Landing.jsx';
+import ProductDetail from '@/pages/ProductDetail.jsx';
+import Cart from '@/pages/Cart.jsx';
+import ProductsCatalog from '@/pages/ProductsCatalog.jsx';
+import ProductImport from '@/pages/ProductImport.jsx';
+import VaccineCompare from '@/pages/VaccineCompare.jsx';
 
 const PublicApp = () => {
   return (
@@ -29,7 +29,7 @@ function App() {
         <PublicApp />
       </Router>
     </LangProvider>
-  )
+  );
 }
 
-export default App
+export default App;
