@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound.jsx';
-import { LangProvider } from './i18n/index.js';
+import { LangProvider } from './lib/i18n.jsx';
 import Landing from '@/pages/Landing.jsx';
 import ProductDetail from '@/pages/ProductDetail.jsx';
 import Cart from '@/pages/Cart.jsx';
